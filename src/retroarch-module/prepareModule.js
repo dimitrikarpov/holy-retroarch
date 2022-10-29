@@ -1,10 +1,10 @@
-const prepareModule = (canvas) => {
+export const prepareModule = (canvas, onRuntimeInitialized) => {
   const Module = {
-    canvas, // document.getElementById("canvas"),
+    canvas,
     noInitialRun: true,
     arguments: ["/rom.bin", "--verbose"],
     onRuntimeInitialized: () => {
-      copyBundle()
+      // copyBundle()
     },
     print: function (text) {
       console.log("stdout: " + text)
