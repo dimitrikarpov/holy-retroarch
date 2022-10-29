@@ -9,30 +9,23 @@ module.exports = {
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
-    // clean: true,
+    clean: true,
   },
   plugins: [
-    // new HtmlWebpackPlugin({ title: "Output management" }),
-    // new CopyPlugin({
-    //   patterns: [{ from: "cores" }],
-    // }),
+    new HtmlWebpackPlugin({
+      templateContent: `
+        <html>
+          <body>
+            <h1>Hello World</h1>
+            <holy-retro-nestopia prop1="foo"></holy-retro-nestopia>
+          </body>
+        </html>
+    `,
+    }),
+    // new CopyPlugin({ patterns: [{ from: "./HelloWorld.js" }] }),
   ],
-
-  module: {
-    rules: [
-      {
-        test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
-      },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: "asset/resource",
-      },
-      //   {
-      //     test: /libretro.wasm$/i,
-      //     type: "asset",
-      //   },
-    ],
+  devServer: {
+    static: "./dist",
   },
   resolve: {
     fallback: {

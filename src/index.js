@@ -1,26 +1,41 @@
-import { importModule } from "./importModule.js"
-import { init } from "./init.js"
-function component() {
-  const canvas = document.getElementById("canvas")
+import { HolyRetroNestopia } from "./HolyRetroNestopia.js"
 
-  if (!canvas) return
-
-  console.log({ canvas })
-
-  init(canvas)
-
-  //   setTimeout(() => {
-  importModule()
-  //   }, 5000)
-
-  const element = document.createElement("div")
-
-  element.innerHTML = "fafa"
-
-  return element
+const registerComponent = (name, Component) => {
+  if (!customElements.get(name)) {
+    customElements.define(name, Component)
+  }
 }
 
-document.body.appendChild(component())
+const main = () => {
+  console.log("main")
+  registerComponent("holy-retro-nestopia", HolyRetroNestopia)
+}
+
+main()
+
+// const { downloadModule } = require("./downloadModule.js")
+
+// function component() {
+//   // const canvas = document.getElementById("canvas")
+
+//   // if (!canvas) return
+
+//   // console.log({ canvas })
+
+//   const element = document.createElement("div")
+
+//   element.innerHTML = "fafa"
+
+//   // downloadModule(
+//   //   "https://cdn.jsdelivr.net/gh/dimitrikarpov/libretro-cores-js@master/cores/nestopia_libretro.js",
+//   // )
+
+//   return element
+// }
+
+// document.body.appendChild(component())
+
+// https://cdn.jsdelivr.net/gh/dimitrikarpov/libretro-cores-js@master/cores/nestopia_libretro.js
 
 /**
  
