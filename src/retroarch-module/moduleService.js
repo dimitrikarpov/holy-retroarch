@@ -17,6 +17,7 @@
  * - and we ready to start the Module!
  */
 
+import { Deferred } from "../utils/Deferred"
 import { configureModule } from "./configureModule"
 import { copyConfig } from "./copyConfig"
 import { copyRom } from "./copyRom"
@@ -24,23 +25,27 @@ import { downloadAssets } from "./downloadAssets"
 import { downloadModule } from "./downloadModule"
 import { getDownloadUrl } from "./getDownloadUrl"
 
+const deferredOnRuntimeInitialized = new Deferred()
+const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve()
+
 export class ModuleService {
   static async prepare(canvas) {
-    configureModule(canvas)
+    configureModule(canvas, onRuntimeInitialized)
     await downloadModule(getDownloadUrl("core", "nestopia_libretro.js"))
+    await deferredOnRuntimeInitialized.promise
     await downloadAssets()
     copyConfig()
   }
 
-  static uploadSave(savefile) {} // public or it should goes through the props
+  static uploadSave(savefile) {}
 
   static uploadRom(romfile) {
     copyRom(romfile)
-  } // public or it should goes through the props
+  }
 
   static start() {
     window.Module.callMain(window.Module.arguments)
-  } // public or if props with rom and save where available - starts automatically
+  }
 }
 
 // prepare module

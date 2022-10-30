@@ -1,4 +1,9 @@
-import { defaultKeybinds, extraConfig, nulKeys } from "./defaultConfig"
+import {
+  defaultKeybinds,
+  extraConfig,
+  nulKeys,
+  stringifySettings,
+} from "./defaultConfig"
 
 export const copyConfig = () => {
   window.FS.createPath("/", "home/web_user/retroarch/userdata", true, true)

@@ -3,9 +3,7 @@ export const configureModule = (canvas, onRuntimeInitialized) => {
     canvas,
     noInitialRun: true,
     arguments: ["/rom.bin", "--verbose"],
-    onRuntimeInitialized: () => {
-      // copyBundle()
-    },
+    onRuntimeInitialized,
     print: function (text) {
       console.log("stdout: " + text)
     },
