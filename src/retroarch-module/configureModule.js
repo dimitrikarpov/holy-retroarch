@@ -1,4 +1,4 @@
-export const prepareModule = (canvas, onRuntimeInitialized) => {
+export const configureModule = (canvas, onRuntimeInitialized) => {
   const Module = {
     canvas,
     noInitialRun: true,

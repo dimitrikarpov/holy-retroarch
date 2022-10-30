@@ -13,8 +13,6 @@ const main = () => {
 
 main()
 
-// https://cdn.jsdelivr.net/gh/dimitrikarpov/libretro-cores-js@master/cores/nestopia_libretro.js
-
 /**
  
     <holy-retro-nestopia onReady=((Service, Module, FS, RA) => {
