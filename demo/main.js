@@ -12,11 +12,10 @@ async function onUpload() {
 }
 
 const main = () => {
+  //   createEmulator()
+
   const $file = document.getElementById("rom")
   $file.addEventListener("change", onUpload, false)
-
-  const $holyRetro = document.createElement("holy-retroarch-nestopia")
-  document.body.appendChild($holyRetro)
 }
 
 main()
