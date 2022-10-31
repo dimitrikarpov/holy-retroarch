@@ -4,12 +4,12 @@ export const configureModule = (canvas, onRuntimeInitialized) => {
     noInitialRun: true,
     arguments: ["/rom.bin", "--verbose"],
     onRuntimeInitialized,
-    print: function (text) {
-      console.log("stdout: " + text)
-    },
-    printErr: function (text) {
-      console.log("stderr: " + text)
-    },
+    // print: function (text) {
+    //   console.log("stdout: " + text)
+    // },
+    // printErr: function (text) {
+    //   // console.log("stderr: " + text)
+    // },
     preRun: [],
     postRun: [],
   }
