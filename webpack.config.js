@@ -8,10 +8,17 @@ module.exports = {
     filename: "index.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
+    library: {
+      type: "module",
+    },
   },
   devServer: {
     static: "./dist",
   },
+  experiments: {
+    outputModule: true,
+  },
+
   resolve: {
     fallback: {
       path: false,
