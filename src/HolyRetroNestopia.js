@@ -1,12 +1,9 @@
-import { ModuleService } from "./retroarch-module/moduleService"
-
 const templateString = `<canvas></canvas>`
 
 export class HolyRetroNestopia extends HTMLElement {
   constructor() {
     super()
 
-    this.service = ModuleService
     this.innerHTML = templateString
     this.$canvas = this.querySelector("canvas")
   }
