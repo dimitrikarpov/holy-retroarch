@@ -1,5 +1,5 @@
 const isEmulatorStarted = (message) => {
-  const isStarted = false
+  let isStarted = false
 
   if (message.includes("VSync => ON")) {
     isStarted = true
@@ -9,8 +9,6 @@ const isEmulatorStarted = (message) => {
 }
 
 const log = (message) => {
-  // console.log(message)
-
   // hide assets warning
   if (message.includes("Asset missing")) return
 
@@ -21,9 +19,6 @@ const log = (message) => {
 }
 
 export const moduleLogger = () => {
-  const printLogs = []
-  const printErrLogs = []
-
   return {
     print: log,
     printErr: log,
