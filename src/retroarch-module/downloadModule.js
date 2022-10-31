@@ -1,4 +1,9 @@
-export const downloadModule = async (url) => {
+const cores_url =
+  "https://cdn.jsdelivr.net/gh/dimitrikarpov/holy-retroarch@master/cores"
+
+export const downloadModule = async (moduleName) => {
+  const url = `${cores_url}/${moduleName}.js`
+
   return new Promise((resolve, reject) => {
     if (Boolean(document.querySelector(`[src="${url}"`))) return
 
