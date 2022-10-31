@@ -25,29 +25,14 @@ import { downloadAssets } from "./downloadAssets"
 import { downloadModule } from "./downloadModule"
 import { getDownloadUrl } from "./getDownloadUrl"
 
-const waitS = (ms = 2000) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
-}
-
 const deferredOnRuntimeInitialized = new Deferred()
 const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve()
 
 export class ModuleService {
   static async prepare(canvas) {
     configureModule(canvas, onRuntimeInitialized)
-
-    // await waitS(1000)
-
     await downloadModule(getDownloadUrl("core", "nestopia_libretro.js"))
-
-    // await waitS(1000)
-
     await deferredOnRuntimeInitialized.promise
-
-    // await waitS(1000)
-
     await downloadAssets()
     copyConfig()
   }

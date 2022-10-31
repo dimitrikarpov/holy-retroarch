@@ -10,7 +10,6 @@ export class HolyRetroNestopia extends HTMLElement {
   connectedCallback() {
     this.innerHTML = templateString
     this.$canvas = this.querySelector("canvas")
-    console.log("is connected!!")
 
     ModuleService.prepare(this.$canvas)
   }
