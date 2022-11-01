@@ -17,7 +17,16 @@ const createCanvas = (container) => {
   return canvas
 }
 
-export const createRetroarch = async (container, rom, savefile) => {
+export const createRetroarch = async ({
+  container,
+  rom,
+  savefile,
+  onStarted,
+}) => {
+  if (onStarted) {
+    RetroarchService.onEmulatorStarted = onStarted
+  }
+
   const canvas = createCanvas(container)
 
   await RetroarchService.prepare(canvas)

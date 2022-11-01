@@ -1,10 +1,12 @@
+import { RetroarchService } from "./RetroarchService"
+
 const isEmulatorStarted = (message) => {
   let isStarted = false
 
   if (message.includes("VSync => ON")) {
     isStarted = true
 
-    console.log(">>>>>>>>>>> EMULATOR IS STARTED <<<<<<<<<<<<<<<")
+    RetroarchService.onEmulatorStarted()
   }
 }
 

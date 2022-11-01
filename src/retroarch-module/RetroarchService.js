@@ -43,4 +43,8 @@ export class RetroarchService {
   static start() {
     window.Module.callMain(window.Module.arguments)
   }
+
+  static onEmulatorStarted() {
+    console.log("[Retroarch Service]: emulator started")
+  }
 }

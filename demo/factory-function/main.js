@@ -3,12 +3,16 @@ import { convertFileToUint8Array, createRetroarch } from "../../dist/index.js"
 let rom
 let savefile
 
+function onStarted() {
+  console.log(">>>>>>>>>>> EMULATOR IS STARTED <<<<<<<<<<<<<<<")
+}
+
 async function onUpload() {
   rom = await convertFileToUint8Array(this.files[0])
 }
 
 function onStart() {
-  createRetroarch(undefined, rom)
+  createRetroarch({ rom, onStarted })
 }
 
 const main = () => {
