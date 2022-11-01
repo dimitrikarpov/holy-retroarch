@@ -11,6 +11,4 @@ export { createRetroarch } from "./createRetroarch"
 /**
  * TODO:
  * - resize window
- * - figure out how to load from save state
- * - onEmulatorStarted event handler
  */

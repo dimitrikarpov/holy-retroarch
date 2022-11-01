@@ -1,23 +1,30 @@
 import { convertFileToUint8Array, createRetroarch } from "../../dist/index.js"
 
 let rom
-let savefile
+let state
 
 function onStarted() {
   console.log(">>>>>>>>>>> EMULATOR IS STARTED <<<<<<<<<<<<<<<")
 }
 
-async function onUpload() {
+async function onUploadRom() {
   rom = await convertFileToUint8Array(this.files[0])
 }
 
+async function onUploadState() {
+  state = await convertFileToUint8Array(this.files[0])
+}
+
 function onStart() {
-  createRetroarch({ rom, onStarted })
+  createRetroarch({ rom, savestate: state, onStarted })
 }
 
 const main = () => {
-  const $file = document.getElementById("rom")
-  $file.addEventListener("change", onUpload, false)
+  const $rom = document.getElementById("rom")
+  $rom.addEventListener("change", onUploadRom, false)
+
+  const $state = document.getElementById("state")
+  $state.addEventListener("change", onUploadState, false)
 
   const $start = document.getElementById("start")
   $start.addEventListener("click", onStart, false)

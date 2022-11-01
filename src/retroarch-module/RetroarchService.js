@@ -21,6 +21,7 @@ import { Deferred } from "../utils/Deferred"
 import { configureModule } from "./configureModule"
 import { copyConfig } from "./copyConfig"
 import { copyRom } from "./copyRom"
+import { copySave } from "./copySave"
 import { downloadModule } from "./downloadModule"
 
 const deferredOnRuntimeInitialized = new Deferred()
@@ -34,7 +35,9 @@ export class RetroarchService {
     copyConfig()
   }
 
-  static uploadSave(savefile) {}
+  static uploadSave(statefile) {
+    copySave(statefile)
+  }
 
   static uploadRom(romfile) {
     copyRom(romfile)
@@ -42,6 +45,10 @@ export class RetroarchService {
 
   static start() {
     window.Module.callMain(window.Module.arguments)
+  }
+
+  static loadSave() {
+    window.Module_cmd_load_state()
   }
 
   static onEmulatorStarted() {

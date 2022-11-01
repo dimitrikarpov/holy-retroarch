@@ -20,7 +20,7 @@ const createCanvas = (container) => {
 export const createRetroarch = async ({
   container,
   rom,
-  savefile,
+  savestate,
   onStarted,
 }) => {
   if (onStarted) {
@@ -31,7 +31,12 @@ export const createRetroarch = async ({
 
   await RetroarchService.prepare(canvas)
 
-  if (rom) {
+  if (rom && savestate) {
+    RetroarchService.uploadRom(rom)
+    RetroarchService.uploadSave(savestate)
+    await waitMs(250)
+    RetroarchService.start()
+  } else if (rom) {
     RetroarchService.uploadRom(rom)
     await waitMs(250)
     RetroarchService.start()
