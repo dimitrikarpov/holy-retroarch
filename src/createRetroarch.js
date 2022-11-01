@@ -1,4 +1,5 @@
-import { ModuleService } from "./retroarch-module/moduleService"
+import { RetroarchService } from "./retroarch-module/RetroarchService"
+import { waitMs } from "./utils/waitMs"
 
 const templateString = `<canvas id="canvas"></canvas>`
 
@@ -19,10 +20,11 @@ const createCanvas = (container) => {
 export const createRetroarch = async (container, rom, savefile) => {
   const canvas = createCanvas(container)
 
-  await ModuleService.prepare(canvas)
+  await RetroarchService.prepare(canvas)
 
   if (rom) {
-    ModuleService.uploadRom(rom)
-    ModuleService.start()
+    RetroarchService.uploadRom(rom)
+    await waitMs(250)
+    RetroarchService.start()
   }
 }

@@ -1,8 +1,8 @@
-import { ModuleService } from "./retroarch-module/moduleService"
+import { RetroarchService } from "./retroarch-module/RetroarchService"
 
 const templateString = `<canvas id="canvas"></canvas>`
 
-export class HolyRetroNestopia extends HTMLElement {
+export class RetroarchComponent extends HTMLElement {
   constructor() {
     super()
   }
@@ -11,7 +11,7 @@ export class HolyRetroNestopia extends HTMLElement {
     this.innerHTML = templateString
     this.$canvas = this.querySelector("canvas")
 
-    ModuleService.prepare(this.$canvas)
+    RetroarchService.prepare(this.$canvas)
   }
 
   disconnectedCallback() {}

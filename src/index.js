@@ -1,9 +1,16 @@
-import { HolyRetroNestopia } from "./HolyRetroNestopia"
+import { RetroarchComponent } from "./RetroarchComponent"
 
-if (!customElements.get("holy-retroarch-nestopia")) {
-  customElements.define("holy-retroarch-nestopia", HolyRetroNestopia)
+if (!customElements.get("holy-retroarch")) {
+  customElements.define("holy-retroarch", RetroarchComponent)
 }
 
-export { ModuleService } from "./retroarch-module/moduleService"
+export { RetroarchService } from "./retroarch-module/RetroarchService"
 export { convertFileToUint8Array } from "./utils/convertFileToUnit8Array"
 export { createRetroarch } from "./createRetroarch"
+
+/**
+ * TODO:
+ * - resize window
+ * - figure out how to load from save state
+ * - onEmulatorStarted event handler
+ */

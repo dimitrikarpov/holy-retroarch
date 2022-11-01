@@ -26,7 +26,7 @@ import { downloadModule } from "./downloadModule"
 const deferredOnRuntimeInitialized = new Deferred()
 const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve()
 
-export class ModuleService {
+export class RetroarchService {
   static async prepare(canvas) {
     configureModule(canvas, onRuntimeInitialized)
     await downloadModule("nestopia_libretro")
