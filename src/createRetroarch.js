@@ -27,4 +27,6 @@ export const createRetroarch = async (container, rom, savefile) => {
     await waitMs(250)
     RetroarchService.start()
   }
+
+  return RetroarchService
 }
