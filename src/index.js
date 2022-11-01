@@ -6,3 +6,4 @@ if (!customElements.get("holy-retroarch-nestopia")) {
 
 export { ModuleService } from "./retroarch-module/moduleService"
 export { convertFileToUint8Array } from "./utils/convertFileToUnit8Array"
+export { createRetroarch } from "./createRetroarch"
