@@ -5,12 +5,8 @@ var thisProgram = "./this.program"
 var quit_ = (status, toThrow) => {
   throw toThrow
 }
-var ENVIRONMENT_IS_WEB = typeof window == "object"
-var ENVIRONMENT_IS_WORKER = typeof importScripts == "function"
-var ENVIRONMENT_IS_NODE =
-  typeof process == "object" &&
-  typeof process.versions == "object" &&
-  typeof process.versions.node == "string"
+var ENVIRONMENT_IS_WEB = true
+var ENVIRONMENT_IS_WORKER = false
 var scriptDirectory = ""
 function locateFile(path) {
   if (Module["locateFile"]) {
@@ -19,67 +15,7 @@ function locateFile(path) {
   return scriptDirectory + path
 }
 var read_, readAsync, readBinary, setWindowTitle
-function logExceptionOnExit(e) {
-  if (e instanceof ExitStatus) return
-  let toLog = e
-  err("exiting due to exception: " + toLog)
-}
-if (ENVIRONMENT_IS_NODE) {
-  if (ENVIRONMENT_IS_WORKER) {
-    scriptDirectory = require("path").dirname(scriptDirectory) + "/"
-  } else {
-    scriptDirectory = __dirname + "/"
-  }
-  var fs, nodePath
-  if (typeof require === "function") {
-    fs = require("fs")
-    nodePath = require("path")
-  }
-  read_ = (filename, binary) => {
-    filename = nodePath["normalize"](filename)
-    return fs.readFileSync(filename, binary ? undefined : "utf8")
-  }
-  readBinary = (filename) => {
-    var ret = read_(filename, true)
-    if (!ret.buffer) {
-      ret = new Uint8Array(ret)
-    }
-    return ret
-  }
-  readAsync = (filename, onload, onerror) => {
-    filename = nodePath["normalize"](filename)
-    fs.readFile(filename, function (err, data) {
-      if (err) onerror(err)
-      else onload(data.buffer)
-    })
-  }
-  if (process["argv"].length > 1) {
-    thisProgram = process["argv"][1].replace(/\\/g, "/")
-  }
-  arguments_ = process["argv"].slice(2)
-  if (typeof module != "undefined") {
-    module["exports"] = Module
-  }
-  process["on"]("uncaughtException", function (ex) {
-    if (!(ex instanceof ExitStatus)) {
-      throw ex
-    }
-  })
-  process["on"]("unhandledRejection", function (reason) {
-    throw reason
-  })
-  quit_ = (status, toThrow) => {
-    if (keepRuntimeAlive()) {
-      process["exitCode"] = status
-      throw toThrow
-    }
-    logExceptionOnExit(toThrow)
-    process["exit"](status)
-  }
-  Module["inspect"] = function () {
-    return "[Emscripten Module object]"
-  }
-} else if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
+if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
   if (ENVIRONMENT_IS_WORKER) {
     scriptDirectory = self.location.href
   } else if (typeof document != "undefined" && document.currentScript) {
@@ -358,9 +294,6 @@ var dataURIPrefix = "data:application/octet-stream;base64,"
 function isDataURI(filename) {
   return filename.startsWith(dataURIPrefix)
 }
-function isFileURI(filename) {
-  return filename.startsWith("file://")
-}
 var wasmBinaryFile
 wasmBinaryFile = "fceumm_libretro.wasm"
 if (!isDataURI(wasmBinaryFile)) {
@@ -381,7 +314,7 @@ function getBinary(file) {
 }
 function getBinaryPromise() {
   if (!wasmBinary && (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER)) {
-    if (typeof fetch == "function" && !isFileURI(wasmBinaryFile)) {
+    if (typeof fetch == "function") {
       return fetch(wasmBinaryFile, { credentials: "same-origin" })
         .then(function (response) {
           if (!response["ok"]) {
@@ -392,18 +325,6 @@ function getBinaryPromise() {
         .catch(function () {
           return getBinary(wasmBinaryFile)
         })
-    } else {
-      if (readAsync) {
-        return new Promise(function (resolve, reject) {
-          readAsync(
-            wasmBinaryFile,
-            function (response) {
-              resolve(new Uint8Array(response))
-            },
-            reject,
-          )
-        })
-      }
     }
   }
   return Promise.resolve().then(function () {
@@ -443,8 +364,6 @@ function createWasm() {
       !wasmBinary &&
       typeof WebAssembly.instantiateStreaming == "function" &&
       !isDataURI(wasmBinaryFile) &&
-      !isFileURI(wasmBinaryFile) &&
-      !ENVIRONMENT_IS_NODE &&
       typeof fetch == "function"
     ) {
       return fetch(wasmBinaryFile, { credentials: "same-origin" }).then(
@@ -547,12 +466,7 @@ function _emscripten_set_main_loop_timing(mode, value) {
   return 0
 }
 var _emscripten_get_now
-if (ENVIRONMENT_IS_NODE) {
-  _emscripten_get_now = () => {
-    var t = process["hrtime"]()
-    return t[0] * 1e3 + t[1] / 1e6
-  }
-} else _emscripten_get_now = () => performance.now()
+_emscripten_get_now = () => performance.now()
 var PATH = {
   isAbs: (path) => path.charAt(0) === "/",
   splitPath: (filename) => {
@@ -634,13 +548,7 @@ function getRandomDevice() {
       crypto.getRandomValues(randomBuffer)
       return randomBuffer[0]
     }
-  } else if (ENVIRONMENT_IS_NODE) {
-    try {
-      var crypto_module = require("crypto")
-      return () => crypto_module["randomBytes"](1)[0]
-    } catch (e) {}
-  }
-  return () => abort("randomDevice")
+  } else return () => abort("randomDevice")
 }
 var PATH_FS = {
   resolve: function () {
@@ -770,22 +678,7 @@ var TTY = {
     get_char: function (tty) {
       if (!tty.input.length) {
         var result = null
-        if (ENVIRONMENT_IS_NODE) {
-          var BUFSIZE = 256
-          var buf = Buffer.alloc(BUFSIZE)
-          var bytesRead = 0
-          try {
-            bytesRead = fs.readSync(process.stdin.fd, buf, 0, BUFSIZE, -1)
-          } catch (e) {
-            if (e.toString().includes("EOF")) bytesRead = 0
-            else throw e
-          }
-          if (bytesRead > 0) {
-            result = buf.slice(0, bytesRead).toString("utf-8")
-          } else {
-            result = null
-          }
-        } else if (
+        if (
           typeof window != "undefined" &&
           typeof window.prompt == "function"
         ) {
@@ -3016,7 +2909,6 @@ function warnOnce(text) {
   if (!warnOnce.shown) warnOnce.shown = {}
   if (!warnOnce.shown[text]) {
     warnOnce.shown[text] = 1
-    if (ENVIRONMENT_IS_NODE) text = "warning: " + text
     err(text)
   }
 }
@@ -5351,18 +5243,10 @@ function _emscripten_force_exit(status) {
 function maybeCStringToJsString(cString) {
   return cString > 2 ? UTF8ToString(cString) : cString
 }
-var specialHTMLTargets = [
-  0,
-  typeof document != "undefined" ? document : 0,
-  typeof window != "undefined" ? window : 0,
-]
+var specialHTMLTargets = [0, document, window]
 function findEventTarget(target) {
   target = maybeCStringToJsString(target)
-  var domElement =
-    specialHTMLTargets[target] ||
-    (typeof document != "undefined"
-      ? document.querySelector(target)
-      : undefined)
+  var domElement = specialHTMLTargets[target] || document.querySelector(target)
   return domElement
 }
 function findCanvasEventTarget(target) {

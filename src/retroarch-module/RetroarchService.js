@@ -34,7 +34,7 @@ const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve()
 export class RetroarchService {
   static async prepare(canvas) {
     configureModule(canvas, onRuntimeInitialized)
-    await downloadModule("nestopia_libretro")
+    await downloadModule("fceumm_libretro")
     await deferredOnRuntimeInitialized.promise
     copyFile(
       stringifySettings({ ...defaultKeybinds, ...extraConfig, ...nulKeys }),
