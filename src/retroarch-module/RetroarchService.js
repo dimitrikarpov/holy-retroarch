@@ -17,16 +17,16 @@
  * - and we ready to start the Module!
  */
 
+import { downloadModule } from "./downloadModule"
+import { configureModule } from "./configureModule"
 import { copyFile, DIRS } from "../utils/copyFile"
 import { Deferred } from "../utils/Deferred"
-import { configureModule } from "./configureModule"
 import {
   defaultKeybinds,
   extraConfig,
   nulKeys,
   stringifySettings,
 } from "./defaultConfig"
-import { downloadModule } from "./downloadModule"
 
 const deferredOnRuntimeInitialized = new Deferred()
 const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve()
