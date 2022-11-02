@@ -17,11 +17,15 @@
  * - and we ready to start the Module!
  */
 
+import { copyFile, DIRS } from "../utils/copyFile"
 import { Deferred } from "../utils/Deferred"
 import { configureModule } from "./configureModule"
-import { copyConfig } from "./copyConfig"
-import { copyRom } from "./copyRom"
-import { copySave } from "./copySave"
+import {
+  defaultKeybinds,
+  extraConfig,
+  nulKeys,
+  stringifySettings,
+} from "./defaultConfig"
 import { downloadModule } from "./downloadModule"
 
 const deferredOnRuntimeInitialized = new Deferred()
@@ -32,15 +36,19 @@ export class RetroarchService {
     configureModule(canvas, onRuntimeInitialized)
     await downloadModule("nestopia_libretro")
     await deferredOnRuntimeInitialized.promise
-    copyConfig()
+    copyFile(
+      stringifySettings({ ...defaultKeybinds, ...extraConfig, ...nulKeys }),
+      DIRS.USERDATA,
+      "retroarch.cfg",
+    )
   }
 
   static uploadSave(statefile) {
-    copySave(statefile)
+    copyFile(statefile, DIRS.STATES, "rom.state")
   }
 
   static uploadRom(romfile) {
-    copyRom(romfile)
+    copyFile(romfile, DIRS.ROOT, "rom.bin")
   }
 
   static start() {
