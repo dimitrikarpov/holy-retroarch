@@ -3629,7 +3629,6 @@ var RA = {
     const bufferSource = RA.context.createBufferSource()
     bufferSource.buffer = RA.buffers[index]
     bufferSource.connect(RA.context.destination)
-    bufferSource.connect(RA.xdest)
     bufferSource.start(startTime)
     RA.bufIndex++
     RA.bufOffset = 0
@@ -3651,7 +3650,6 @@ function _RWebAudioInit(latency) {
   var ac = window["AudioContext"] || window["webkitAudioContext"]
   if (!ac) return 0
   RA.context = new ac()
-  RA.xdest = RA.context.createMediaStreamDestination()
   RA.numBuffers =
     ((latency * RA.context.sampleRate) / (1e3 * RA.BUFFER_SIZE)) | 0
   if (RA.numBuffers < 2) RA.numBuffers = 2

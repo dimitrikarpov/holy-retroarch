@@ -1,5 +1,5 @@
 const cores_url =
-  "https://cdn.jsdelivr.net/gh/dimitrikarpov/holy-retroarch@master/cores"
+  "https://cdn.jsdelivr.net/gh/dimitrikarpov/holy-retroarch@latest/cores"
 
 export const downloadModule = async (moduleName) => {
   const url = `${cores_url}/${moduleName}.js`
