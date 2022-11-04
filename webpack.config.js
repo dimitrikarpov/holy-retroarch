@@ -1,7 +1,7 @@
 const path = require("path")
 
 module.exports = ({ development }) => ({
-  entry: "./src/index.js",
+  entry: "./src/index.ts",
   devtool: development ? "inline-source-map" : false,
   mode: development ? "development" : "production",
   output: {
@@ -14,5 +14,17 @@ module.exports = ({ development }) => ({
   },
   experiments: {
     outputModule: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
   },
 })

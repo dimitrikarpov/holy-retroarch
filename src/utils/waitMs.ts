@@ -1,4 +1,4 @@
-export const waitMs = (ms = 1000) => {
+export const waitMs = (ms: number = 1000) => {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
   })

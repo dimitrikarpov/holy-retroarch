@@ -27,12 +27,13 @@ import {
   nulKeys,
   stringifySettings,
 } from "./defaultConfig"
+import { IRetroarchService } from "../types"
 
 const deferredOnRuntimeInitialized = new Deferred()
-const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve()
+const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve("")
 
-export class RetroarchService {
-  static async prepare(canvas, core) {
+export const RetroarchService: IRetroarchService = {
+  prepare: async (canvas, core) => {
     configureModule(canvas, onRuntimeInitialized)
     await downloadModule(core)
     await deferredOnRuntimeInitialized.promise
@@ -41,27 +42,27 @@ export class RetroarchService {
       DIRS.USERDATA,
       "retroarch.cfg",
     )
-  }
+  },
 
-  static uploadSave(statefile) {
-    copyFile(statefile, DIRS.STATES, "rom.state")
-  }
+  uploadSave: (state) => {
+    copyFile(state, DIRS.STATES, "rom.state")
+  },
 
-  static uploadRom(romfile) {
-    copyFile(romfile, DIRS.ROOT, "rom.bin")
-  }
+  uploadRom: (rom) => {
+    copyFile(rom, DIRS.ROOT, "rom.bin")
+  },
 
-  static start() {
+  start: () => {
     window.Module.callMain(window.Module.arguments)
     window.Module["resumeMainLoop"]()
     document.getElementById("canvas").focus()
-  }
+  },
 
-  static loadSave() {
-    window.Module_cmd_load_state()
-  }
+  loadSave: () => {
+    window.Module._cmd_load_state()
+  },
 
-  static onEmulatorStarted() {
+  onEmulatorStarted: () => {
     console.log("[Retroarch Service]: emulator started")
-  }
+  },
 }

@@ -1,6 +1,6 @@
 import { RetroarchService } from "./RetroarchService"
 
-const isEmulatorStarted = (message) => {
+const isEmulatorStarted = (message: string) => {
   let isStarted = false
 
   if (message.includes("VSync => ON")) {
@@ -10,7 +10,7 @@ const isEmulatorStarted = (message) => {
   }
 }
 
-const log = (message) => {
+const log = (message: string) => {
   // hide assets warning
   if (message.includes("Asset missing")) return
 
