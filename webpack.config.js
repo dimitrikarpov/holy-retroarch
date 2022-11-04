@@ -1,9 +1,9 @@
 const path = require("path")
 
-module.exports = {
-  mode: "development",
-  devtool: "inline-source-map",
+module.exports = ({ development }) => ({
   entry: "./src/index.js",
+  devtool: development ? "inline-source-map" : false,
+  mode: development ? "development" : "production",
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "dist"),
@@ -12,17 +12,7 @@ module.exports = {
       type: "module",
     },
   },
-  devServer: {
-    static: "./dist",
-  },
   experiments: {
     outputModule: true,
   },
-
-  resolve: {
-    fallback: {
-      path: false,
-      fs: false,
-    },
-  },
-}
+})
