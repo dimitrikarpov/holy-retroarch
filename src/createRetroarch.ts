@@ -1,6 +1,13 @@
-import { RetroarchService } from "./retroarch-module/RetroarchService"
-import { TCreateRetroarchOptions } from "./types"
+import { RetroarchService, TCore } from "./retroarch-module/RetroarchService"
 import { waitMs } from "./utils/waitMs"
+
+export type TCreateRetroarchOptions = {
+  core: TCore
+  rom: Uint8Array
+  container?: HTMLElement
+  save?: Uint8Array
+  onStarted?: () => void
+}
 
 const templateString = `<canvas id="canvas"></canvas>`
 

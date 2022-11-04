@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "./dist"
+  ],
   "scripts": {
     "dev": "webpack --env development --watch",
     "build": "webpack --env production"

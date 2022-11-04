@@ -27,7 +27,17 @@ import {
   nulKeys,
   stringifySettings,
 } from "./defaultConfig"
-import { IRetroarchService } from "../types"
+
+export type TCore = "nestopia" | "fceumm"
+
+export interface IRetroarchService {
+  prepare: (canvas: HTMLCanvasElement, core: TCore) => Promise<void>
+  uploadSave: (state: Uint8Array) => void
+  uploadRom: (rom: Uint8Array) => void
+  start: () => void
+  loadSave: () => void
+  onEmulatorStarted: () => void
+}
 
 const deferredOnRuntimeInitialized = new Deferred()
 const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve("")
