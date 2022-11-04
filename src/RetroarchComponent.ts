@@ -3,6 +3,10 @@ import { RetroarchService } from "./retroarch-module/RetroarchService"
 const templateString = `<canvas id="canvas"></canvas>`
 
 export class RetroarchComponent extends HTMLElement {
+  retroarchService
+  core
+  $canvas
+
   constructor() {
     super()
 
