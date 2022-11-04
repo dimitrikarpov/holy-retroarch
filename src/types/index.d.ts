@@ -20,3 +20,11 @@ export type TCreateRetroarchOptions = {
 export type TCreateRetroarch = (
   options: TCreateRetroarchOptions,
 ) => Promise<IRetroarchService>
+
+declare global {
+  interface Window {
+    Module: any
+    FS: any
+    RA: any
+  }
+}
