@@ -16,7 +16,7 @@ async function onUploadState() {
 }
 
 function onStart() {
-  createRetroarch({ rom, savestate: state, onStarted })
+  createRetroarch({ core: "nestopia", rom, savestate: state, onStarted })
 }
 
 const main = () => {

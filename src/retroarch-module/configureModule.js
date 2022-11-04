@@ -3,7 +3,7 @@ import { moduleLogger } from "./moduleLogger"
 const { print, printErr } = moduleLogger()
 
 export const configureModule = (canvas, onRuntimeInitialized) => {
-  const Module = {
+  window.Module = {
     canvas,
     noInitialRun: true,
     arguments: ["/rom.bin", "--verbose"],
@@ -13,6 +13,4 @@ export const configureModule = (canvas, onRuntimeInitialized) => {
     preRun: [],
     postRun: [],
   }
-
-  window.Module = Module
 }

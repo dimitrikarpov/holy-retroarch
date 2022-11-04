@@ -22,6 +22,7 @@ export const createRetroarch = async ({
   rom,
   savestate,
   onStarted,
+  core,
 }) => {
   if (onStarted) {
     RetroarchService.onEmulatorStarted = onStarted
@@ -29,7 +30,7 @@ export const createRetroarch = async ({
 
   const canvas = createCanvas(container)
 
-  await RetroarchService.prepare(canvas)
+  await RetroarchService.prepare(canvas, core)
 
   if (rom && savestate) {
     RetroarchService.uploadRom(rom)

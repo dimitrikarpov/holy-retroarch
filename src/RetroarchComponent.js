@@ -13,7 +13,9 @@ export class RetroarchComponent extends HTMLElement {
     this.innerHTML = templateString
     this.$canvas = this.querySelector("canvas")
 
-    RetroarchService.prepare(this.$canvas)
+    this.core = this.getAttribute("core")
+
+    RetroarchService.prepare(this.$canvas, this.core)
   }
 
   disconnectedCallback() {}

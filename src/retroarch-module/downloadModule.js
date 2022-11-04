@@ -2,7 +2,7 @@ const cores_url =
   "https://cdn.statically.io/gh/dimitrikarpov/holy-retroarch@master/cores"
 
 export const downloadModule = async (moduleName) => {
-  const url = `${cores_url}/${moduleName}.js`
+  const url = `${cores_url}/${moduleName}_libretro.js`
 
   return new Promise((resolve, reject) => {
     if (Boolean(document.querySelector(`[src="${url}"`))) return

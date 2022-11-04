@@ -32,9 +32,9 @@ const deferredOnRuntimeInitialized = new Deferred()
 const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve()
 
 export class RetroarchService {
-  static async prepare(canvas) {
+  static async prepare(canvas, core) {
     configureModule(canvas, onRuntimeInitialized)
-    await downloadModule("nestopia_libretro")
+    await downloadModule(core)
     await deferredOnRuntimeInitialized.promise
     copyFile(
       stringifySettings({ ...defaultKeybinds, ...extraConfig, ...nulKeys }),
@@ -53,6 +53,8 @@ export class RetroarchService {
 
   static start() {
     window.Module.callMain(window.Module.arguments)
+    window.Module["resumeMainLoop"]()
+    document.getElementById("canvas").focus()
   }
 
   static loadSave() {
