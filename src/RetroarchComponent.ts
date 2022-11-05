@@ -1,25 +1,24 @@
-import { RetroarchService } from "./retroarch-module/RetroarchService"
+import { Retroarch, retroarch, TCore } from "./retroarch-module/retroarch"
 
 const templateString = `<canvas id="canvas"></canvas>`
 
 export class RetroarchComponent extends HTMLElement {
-  retroarchService
-  core
-  $canvas
+  retroarch: Retroarch
+  core: TCore
+  $canvas: HTMLCanvasElement
 
   constructor() {
     super()
 
-    this.retroarchService = RetroarchService
+    this.retroarch = retroarch
   }
 
   connectedCallback() {
     this.innerHTML = templateString
     this.$canvas = this.querySelector("canvas")
+    this.core = this.getAttribute("core") as TCore
 
-    this.core = this.getAttribute("core")
-
-    RetroarchService.prepare(this.$canvas, this.core)
+    retroarch.prepare(this.$canvas, this.core)
   }
 
   disconnectedCallback() {}

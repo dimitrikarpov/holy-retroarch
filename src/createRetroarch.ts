@@ -1,4 +1,4 @@
-import { RetroarchService, TCore } from "./retroarch-module/RetroarchService"
+import { retroarch, TCore } from "./retroarch-module/retroarch"
 import { waitMs } from "./utils/waitMs"
 
 export type TCreateRetroarchOptions = {
@@ -33,23 +33,23 @@ export const createRetroarch = async ({
   core,
 }: TCreateRetroarchOptions) => {
   if (onStarted) {
-    RetroarchService.onEmulatorStarted = onStarted
+    retroarch.onEmulatorStarted = onStarted
   }
 
   const canvas = createCanvas(container)
 
-  await RetroarchService.prepare(canvas, core)
+  await retroarch.prepare(canvas, core)
 
   if (rom && save) {
-    RetroarchService.uploadRom(rom)
-    RetroarchService.uploadSave(save)
+    retroarch.uploadRom(rom)
+    retroarch.uploadSave(save)
     await waitMs(250)
-    RetroarchService.start()
+    retroarch.start()
   } else if (rom) {
-    RetroarchService.uploadRom(rom)
+    retroarch.uploadRom(rom)
     await waitMs(250)
-    RetroarchService.start()
+    retroarch.start()
   }
 
-  return RetroarchService
+  return retroarch
 }

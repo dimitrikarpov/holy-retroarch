@@ -4,9 +4,9 @@ if (!customElements.get("holy-retroarch")) {
   customElements.define("holy-retroarch", RetroarchComponent)
 }
 
-export { RetroarchService } from "./retroarch-module/RetroarchService"
-export { convertFileToUint8Array } from "./utils/convertFileToUnit8Array"
+export { retroarch } from "./retroarch-module/retroarch"
 export { createRetroarch } from "./createRetroarch"
+export { convertFileToUint8Array } from "./utils/convertFileToUnit8Array"
 
 declare global {
   interface Window {

@@ -1,7 +1,8 @@
+import { Retroarch, TCore } from "./retroarch-module/retroarch";
 export declare class RetroarchComponent extends HTMLElement {
-    retroarchService: any;
-    core: any;
-    $canvas: any;
+    retroarch: Retroarch;
+    core: TCore;
+    $canvas: HTMLCanvasElement;
     constructor();
     connectedCallback(): void;
     disconnectedCallback(): void;

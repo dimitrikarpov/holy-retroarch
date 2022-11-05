@@ -17,7 +17,7 @@
  * - and we ready to start the Module!
  */
 export declare type TCore = "nestopia" | "fceumm";
-export interface IRetroarchService {
+export interface Retroarch {
     prepare: (canvas: HTMLCanvasElement, core: TCore) => Promise<void>;
     uploadSave: (state: Uint8Array) => void;
     uploadRom: (rom: Uint8Array) => void;
@@ -25,4 +25,4 @@ export interface IRetroarchService {
     loadSave: () => void;
     onEmulatorStarted: () => void;
 }
-export declare const RetroarchService: IRetroarchService;
+export declare const retroarch: Retroarch;
