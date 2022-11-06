@@ -1,4 +1,4 @@
-import { retroarch, TCore } from "./retroarch-module/retroarch"
+import { Retroarch, TCore } from "./retroarch-module/retroarch"
 
 export type TCreateRetroarchOptions = {
   core: TCore
@@ -10,35 +10,31 @@ export type TCreateRetroarchOptions = {
 
 const templateString = `<canvas id="canvas"></canvas>`
 
-const createCanvas = (container) => {
-  let parentContainer = container
-  if (!container) {
-    parentContainer = document.createElement("div")
-    document.body.appendChild(parentContainer)
-  }
+const createCanvas = () => {
+  let container = document.createElement("div")
+  document.body.appendChild(container)
+  container.innerHTML = templateString
 
-  parentContainer.innerHTML = templateString
-
-  const canvas = parentContainer.querySelector("canvas")
+  const canvas = container.querySelector("canvas")
 
   return canvas
 }
 
 export const createRetroarch = async ({
   core,
-  container,
   rom,
   save,
   onStarted,
 }: TCreateRetroarchOptions) => {
+  const canvas = createCanvas()
+
+  const retroarch = new Retroarch(core, canvas)
+
   if (onStarted) {
     retroarch.onEmulatorStarted = onStarted
   }
 
-  const canvas = createCanvas(container)
-
-  await retroarch.prepare(canvas, core)
-
+  await retroarch.downloadCore()
   retroarch.copyConfig()
 
   if (rom) retroarch.copyRom(rom)

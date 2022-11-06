@@ -30,7 +30,7 @@ import {
 
 export type TCore = "nestopia" | "fceumm"
 
-export interface Retroarch {
+export interface IRetroarch {
   prepare: (canvas: HTMLCanvasElement, core: TCore) => Promise<void>
   copyConfig: () => void
   copyRom: (rom: Uint8Array) => void
@@ -40,43 +40,93 @@ export interface Retroarch {
   onEmulatorStarted: () => void
 }
 
-const deferredOnRuntimeInitialized = new Deferred()
-const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve("")
+// const deferredOnRuntimeInitialized = new Deferred()
+// const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve("")
 
-export const retroarch: Retroarch = {
-  prepare: async (canvas, core) => {
-    configureModule(canvas, onRuntimeInitialized)
-    await downloadModule(core)
-    await deferredOnRuntimeInitialized.promise
-  },
+export class Retroarch {
+  core: TCore
+  canvas: HTMLCanvasElement
+  deferredOnRuntimeInitialized: Deferred
 
-  copyConfig: () => {
+  constructor(core: TCore, canvas: HTMLCanvasElement) {
+    this.core = core
+    this.canvas = canvas
+    this.deferredOnRuntimeInitialized = new Deferred()
+  }
+
+  async downloadCore() {
+    configureModule(this.canvas, () =>
+      this.deferredOnRuntimeInitialized.resolve(""),
+    )
+    await downloadModule(this.core)
+    await this.deferredOnRuntimeInitialized.promise
+  }
+
+  copyConfig() {
     copyFile(
       stringifySettings({ ...defaultKeybinds, ...extraConfig, ...nulKeys }),
       DIRS.USERDATA,
       "retroarch.cfg",
     )
-  },
+  }
 
-  copyRom: (rom) => {
+  copyRom(rom: Uint8Array) {
     copyFile(rom, DIRS.ROOT, "rom.bin")
-  },
+  }
 
-  copySave: (state) => {
+  copySave(state: Uint8Array) {
     copyFile(state, DIRS.STATES, "rom.state")
-  },
+  }
 
-  start: () => {
+  start() {
     window.Module.callMain(window.Module.arguments)
-    window.Module["resumeMainLoop"]()
+    window.Module.resumeMainLoop()
     // document.getElementById("canvas").focus()
-  },
+  }
 
-  loadSave: () => {
+  loadSave() {
     window.Module._cmd_load_state()
-  },
+  }
 
-  onEmulatorStarted: () => {
+  onEmulatorStarted() {
     console.log("[Retroarch Service]: emulator started")
-  },
+  }
 }
+
+// export const retroarch: IRetroarch = {
+//   prepare: async (canvas, core) => {
+//     configureModule(canvas, onRuntimeInitialized)
+//     await downloadModule(core)
+//     await deferredOnRuntimeInitialized.promise
+//   },
+
+//   copyConfig: () => {
+//     copyFile(
+//       stringifySettings({ ...defaultKeybinds, ...extraConfig, ...nulKeys }),
+//       DIRS.USERDATA,
+//       "retroarch.cfg",
+//     )
+//   },
+
+//   copyRom: (rom) => {
+//     copyFile(rom, DIRS.ROOT, "rom.bin")
+//   },
+
+//   copySave: (state) => {
+//     copyFile(state, DIRS.STATES, "rom.state")
+//   },
+
+//   start: () => {
+//     window.Module.callMain(window.Module.arguments)
+//     window.Module["resumeMainLoop"]()
+//     // document.getElementById("canvas").focus()
+//   },
+
+//   loadSave: () => {
+//     window.Module._cmd_load_state()
+//   },
+
+//   onEmulatorStarted: () => {
+//     console.log("[Retroarch Service]: emulator started")
+//   },
+// }

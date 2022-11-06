@@ -1,4 +1,4 @@
-import { retroarch } from "./retroarch"
+// import { Retroarch } from "./retroarch"
 
 const isEmulatorStarted = (message: string) => {
   let isStarted = false
@@ -6,7 +6,7 @@ const isEmulatorStarted = (message: string) => {
   if (message.includes("VSync => ON")) {
     isStarted = true
 
-    retroarch.onEmulatorStarted()
+    // retroarch.onEmulatorStarted()
   }
 }
 

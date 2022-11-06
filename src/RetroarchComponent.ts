@@ -1,4 +1,4 @@
-import { Retroarch, retroarch, TCore } from "./retroarch-module/retroarch"
+import { Retroarch, TCore } from "./retroarch-module/retroarch"
 
 const templateString = `<canvas id="canvas"></canvas>`
 
@@ -9,8 +9,6 @@ export class RetroarchComponent extends HTMLElement {
 
   constructor() {
     super()
-
-    this.retroarch = retroarch
   }
 
   connectedCallback() {
@@ -18,7 +16,13 @@ export class RetroarchComponent extends HTMLElement {
     this.$canvas = this.querySelector("canvas")
     this.core = this.getAttribute("core") as TCore
 
-    retroarch.prepare(this.$canvas, this.core)
+    this.init()
+  }
+
+  async init() {
+    this.retroarch = new Retroarch(this.core, this.$canvas)
+    await this.retroarch.downloadCore()
+    this.retroarch.copyConfig()
   }
 
   disconnectedCallback() {}
