@@ -5,7 +5,7 @@ if (!customElements.get("holy-retroarch")) {
 }
 
 export { createRetroarch } from "./createRetroarch"
-export { convertFileToUint8Array } from "./utils/convertFileToUnit8Array"
+export { toUint8Array } from "./utils/toUint8Array"
 
 declare global {
   interface Window {

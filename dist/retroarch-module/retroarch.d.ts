@@ -16,13 +16,27 @@
  *   retroarch will start it by calling `onRuntimeInitialized` hook or we can copy directly to wasm filesystem
  * - and we ready to start the Module!
  */
+import { Deferred } from "../utils/Deferred";
 export declare type TCore = "nestopia" | "fceumm";
-export interface Retroarch {
+export interface IRetroarch {
     prepare: (canvas: HTMLCanvasElement, core: TCore) => Promise<void>;
-    uploadSave: (state: Uint8Array) => void;
-    uploadRom: (rom: Uint8Array) => void;
+    copyConfig: () => void;
+    copyRom: (rom: Uint8Array) => void;
+    copySave: (state: Uint8Array) => void;
     start: () => void;
     loadSave: () => void;
     onEmulatorStarted: () => void;
 }
-export declare const retroarch: Retroarch;
+export declare class Retroarch {
+    core: TCore;
+    canvas: HTMLCanvasElement;
+    deferredOnRuntimeInitialized: Deferred;
+    constructor(core: TCore, canvas: HTMLCanvasElement);
+    downloadCore(): Promise<void>;
+    copyConfig(): void;
+    copyRom(rom: Uint8Array): void;
+    copySave(state: Uint8Array): void;
+    start(): void;
+    loadSave(): void;
+    onEmulatorStarted(): void;
+}

@@ -5,5 +5,6 @@ export declare class RetroarchComponent extends HTMLElement {
     $canvas: HTMLCanvasElement;
     constructor();
     connectedCallback(): void;
+    init(): Promise<void>;
     disconnectedCallback(): void;
 }

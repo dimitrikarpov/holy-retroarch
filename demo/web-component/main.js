@@ -1,9 +1,9 @@
-import { convertFileToUint8Array } from "../../dist/index.js"
+import { toUint8Array } from "../../dist/index.js"
 
 let retroarch
 
 async function onUpload() {
-  const rom = await convertFileToUint8Array(this.files[0])
+  const rom = await toUint8Array.fromFile(this.files[0])
 
   retroarch.copyRom(rom)
   retroarch.start()

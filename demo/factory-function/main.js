@@ -1,4 +1,4 @@
-import { convertFileToUint8Array, createRetroarch } from "../../dist/index.js"
+import { toUint8Array, createRetroarch } from "../../dist/index.js"
 
 let rom
 let state
@@ -8,11 +8,11 @@ function onStarted() {
 }
 
 async function onUploadRom() {
-  rom = await convertFileToUint8Array(this.files[0])
+  rom = await toUint8Array.fromFile(this.files[0])
 }
 
 async function onUploadState() {
-  state = await convertFileToUint8Array(this.files[0])
+  state = await toUint8Array.fromFile(this.files[0])
 }
 
 async function onStart() {
@@ -22,7 +22,6 @@ async function onStart() {
     savestate: state,
     onStarted,
   })
-  // retroarch.copyConfig()
 
   retroarch.start()
 }
