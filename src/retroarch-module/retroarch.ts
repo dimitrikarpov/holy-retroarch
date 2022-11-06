@@ -32,8 +32,9 @@ export type TCore = "nestopia" | "fceumm"
 
 export interface Retroarch {
   prepare: (canvas: HTMLCanvasElement, core: TCore) => Promise<void>
-  uploadSave: (state: Uint8Array) => void
-  uploadRom: (rom: Uint8Array) => void
+  copyConfig: () => void
+  copyRom: (rom: Uint8Array) => void
+  copySave: (state: Uint8Array) => void
   start: () => void
   loadSave: () => void
   onEmulatorStarted: () => void
@@ -47,6 +48,9 @@ export const retroarch: Retroarch = {
     configureModule(canvas, onRuntimeInitialized)
     await downloadModule(core)
     await deferredOnRuntimeInitialized.promise
+  },
+
+  copyConfig: () => {
     copyFile(
       stringifySettings({ ...defaultKeybinds, ...extraConfig, ...nulKeys }),
       DIRS.USERDATA,
@@ -54,18 +58,18 @@ export const retroarch: Retroarch = {
     )
   },
 
-  uploadSave: (state) => {
-    copyFile(state, DIRS.STATES, "rom.state")
+  copyRom: (rom) => {
+    copyFile(rom, DIRS.ROOT, "rom.bin")
   },
 
-  uploadRom: (rom) => {
-    copyFile(rom, DIRS.ROOT, "rom.bin")
+  copySave: (state) => {
+    copyFile(state, DIRS.STATES, "rom.state")
   },
 
   start: () => {
     window.Module.callMain(window.Module.arguments)
     window.Module["resumeMainLoop"]()
-    document.getElementById("canvas").focus()
+    // document.getElementById("canvas").focus()
   },
 
   loadSave: () => {

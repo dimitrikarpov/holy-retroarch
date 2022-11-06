@@ -1,9 +1,8 @@
 import { retroarch, TCore } from "./retroarch-module/retroarch"
-import { waitMs } from "./utils/waitMs"
 
 export type TCreateRetroarchOptions = {
   core: TCore
-  rom: Uint8Array
+  rom?: Uint8Array
   container?: HTMLElement
   save?: Uint8Array
   onStarted?: () => void
@@ -26,11 +25,11 @@ const createCanvas = (container) => {
 }
 
 export const createRetroarch = async ({
+  core,
   container,
   rom,
   save,
   onStarted,
-  core,
 }: TCreateRetroarchOptions) => {
   if (onStarted) {
     retroarch.onEmulatorStarted = onStarted
@@ -40,16 +39,10 @@ export const createRetroarch = async ({
 
   await retroarch.prepare(canvas, core)
 
-  if (rom && save) {
-    retroarch.uploadRom(rom)
-    retroarch.uploadSave(save)
-    await waitMs(250)
-    retroarch.start()
-  } else if (rom) {
-    retroarch.uploadRom(rom)
-    await waitMs(250)
-    retroarch.start()
-  }
+  retroarch.copyConfig()
+
+  if (rom) retroarch.copyRom(rom)
+  if (save) retroarch.copySave(save)
 
   return retroarch
 }

@@ -4,7 +4,6 @@ if (!customElements.get("holy-retroarch")) {
   customElements.define("holy-retroarch", RetroarchComponent)
 }
 
-export { retroarch } from "./retroarch-module/retroarch"
 export { createRetroarch } from "./createRetroarch"
 export { convertFileToUint8Array } from "./utils/convertFileToUnit8Array"
 
