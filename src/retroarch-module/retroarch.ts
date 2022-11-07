@@ -17,116 +17,54 @@
  * - and we ready to start the Module!
  */
 
-import { downloadModule } from "./downloadModule"
-import { configureModule } from "./configureModule"
-import { copyFile, DIRS } from "../utils/copyFile"
-import { Deferred } from "../utils/Deferred"
+import { DIRS } from "../utils/copyFile"
 import {
   defaultKeybinds,
   extraConfig,
   nulKeys,
   stringifySettings,
+  TSettings,
 } from "./defaultConfig"
+import { CoreModule } from "./coreModule"
 
 export type TCore = "nestopia" | "fceumm"
 
-export interface IRetroarch {
-  prepare: (canvas: HTMLCanvasElement, core: TCore) => Promise<void>
-  copyConfig: () => void
-  copyRom: (rom: Uint8Array) => void
-  copySave: (state: Uint8Array) => void
-  start: () => void
-  loadSave: () => void
-  onEmulatorStarted: () => void
-}
-
-// const deferredOnRuntimeInitialized = new Deferred()
-// const onRuntimeInitialized = () => deferredOnRuntimeInitialized.resolve("")
+const defaultSettings = { ...defaultKeybinds, ...extraConfig, ...nulKeys }
 
 export class Retroarch {
-  core: TCore
-  canvas: HTMLCanvasElement
-  deferredOnRuntimeInitialized: Deferred
+  public module: CoreModule
 
   constructor(core: TCore, canvas: HTMLCanvasElement) {
-    this.core = core
-    this.canvas = canvas
-    this.deferredOnRuntimeInitialized = new Deferred()
+    this.module = new CoreModule(core, canvas)
   }
 
-  async downloadCore() {
-    configureModule(this.canvas, () =>
-      this.deferredOnRuntimeInitialized.resolve(""),
-    )
-    await downloadModule(this.core)
-    await this.deferredOnRuntimeInitialized.promise
+  async init() {
+    await this.module.downloadCore()
+    this.copyConfig()
   }
 
-  copyConfig() {
-    copyFile(
-      stringifySettings({ ...defaultKeybinds, ...extraConfig, ...nulKeys }),
+  copyConfig(settings: TSettings = defaultSettings) {
+    this.module.copyFile(
+      stringifySettings(settings),
       DIRS.USERDATA,
       "retroarch.cfg",
     )
   }
 
   copyRom(rom: Uint8Array) {
-    copyFile(rom, DIRS.ROOT, "rom.bin")
+    this.module.copyFile(rom, DIRS.ROOT, "rom.bin")
   }
 
   copySave(state: Uint8Array) {
-    copyFile(state, DIRS.STATES, "rom.state")
+    this.module.copyFile(state, DIRS.STATES, "rom.state")
   }
 
   start() {
     window.Module.callMain(window.Module.arguments)
     window.Module.resumeMainLoop()
-    // document.getElementById("canvas").focus()
   }
 
   loadSave() {
     window.Module._cmd_load_state()
   }
-
-  onEmulatorStarted() {
-    console.log("[Retroarch Service]: emulator started")
-  }
 }
-
-// export const retroarch: IRetroarch = {
-//   prepare: async (canvas, core) => {
-//     configureModule(canvas, onRuntimeInitialized)
-//     await downloadModule(core)
-//     await deferredOnRuntimeInitialized.promise
-//   },
-
-//   copyConfig: () => {
-//     copyFile(
-//       stringifySettings({ ...defaultKeybinds, ...extraConfig, ...nulKeys }),
-//       DIRS.USERDATA,
-//       "retroarch.cfg",
-//     )
-//   },
-
-//   copyRom: (rom) => {
-//     copyFile(rom, DIRS.ROOT, "rom.bin")
-//   },
-
-//   copySave: (state) => {
-//     copyFile(state, DIRS.STATES, "rom.state")
-//   },
-
-//   start: () => {
-//     window.Module.callMain(window.Module.arguments)
-//     window.Module["resumeMainLoop"]()
-//     // document.getElementById("canvas").focus()
-//   },
-
-//   loadSave: () => {
-//     window.Module._cmd_load_state()
-//   },
-
-//   onEmulatorStarted: () => {
-//     console.log("[Retroarch Service]: emulator started")
-//   },
-// }

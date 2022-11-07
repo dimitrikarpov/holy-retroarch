@@ -24,17 +24,12 @@ export const createRetroarch = async ({
   core,
   rom,
   save,
-  onStarted,
 }: TCreateRetroarchOptions) => {
   const canvas = createCanvas()
 
   const retroarch = new Retroarch(core, canvas)
 
-  if (onStarted) {
-    retroarch.onEmulatorStarted = onStarted
-  }
-
-  await retroarch.downloadCore()
+  await retroarch.init()
   retroarch.copyConfig()
 
   if (rom) retroarch.copyRom(rom)

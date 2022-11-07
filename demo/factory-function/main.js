@@ -17,7 +17,7 @@ async function onUploadState() {
 
 async function onStart() {
   const retroarch = await createRetroarch({
-    core: "nestopia",
+    core: "fceumm",
     rom,
     savestate: state,
     onStarted,
