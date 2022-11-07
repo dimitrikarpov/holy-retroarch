@@ -1,8 +1,6 @@
-import { TCore } from "./retroarch"
 import { Deferred } from "../utils/Deferred"
 import { configureModule } from "./configureModule"
 import { injectScript } from "../utils/injectScript"
-import { waitMs } from "../utils/waitMs"
 
 const cores_url =
   "https://cdn.statically.io/gh/dimitrikarpov/holy-retroarch@master/cores"
@@ -13,7 +11,9 @@ export const DIRS = {
   STATES: "home/web_user/retroarch/userdata/states",
 }
 
-export class CoreModule {
+export type TCore = "nestopia" | "fceumm"
+
+export class CoreManager {
   private core: TCore
   private deferredOnRuntimeInitialized: Deferred
   public canvas: HTMLCanvasElement

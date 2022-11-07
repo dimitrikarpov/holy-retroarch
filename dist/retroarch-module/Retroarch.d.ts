@@ -16,55 +16,15 @@
  *   retroarch will start it by calling `onRuntimeInitialized` hook or we can copy directly to wasm filesystem
  * - and we ready to start the Module!
  */
-
-import { DIRS } from "../utils/copyFile"
-import {
-  defaultKeybinds,
-  extraConfig,
-  nulKeys,
-  stringifySettings,
-  TSettings,
-} from "./defaultConfig"
-import { CoreModule } from "./coreModule"
-
-export type TCore = "nestopia" | "fceumm"
-
-const defaultSettings = { ...defaultKeybinds, ...extraConfig, ...nulKeys }
-
-export class Retroarch {
-  public module: CoreModule
-
-  constructor(core: TCore, canvas: HTMLCanvasElement) {
-    this.module = new CoreModule(core, canvas)
-  }
-
-  async init() {
-    await this.module.downloadCore()
-    this.copyConfig()
-  }
-
-  copyConfig(settings: TSettings = defaultSettings) {
-    this.module.copyFile(
-      stringifySettings(settings),
-      DIRS.USERDATA,
-      "retroarch.cfg",
-    )
-  }
-
-  copyRom(rom: Uint8Array) {
-    this.module.copyFile(rom, DIRS.ROOT, "rom.bin")
-  }
-
-  copySave(state: Uint8Array) {
-    this.module.copyFile(state, DIRS.STATES, "rom.state")
-  }
-
-  start() {
-    window.Module.callMain(window.Module.arguments)
-    window.Module.resumeMainLoop()
-  }
-
-  loadSave() {
-    window.Module._cmd_load_state()
-  }
+import { TSettings } from "./defaultConfig";
+import { CoreManager, TCore } from "./CoreManager";
+export declare class Retroarch {
+    manager: CoreManager;
+    constructor(core: TCore, canvas: HTMLCanvasElement);
+    init(): Promise<void>;
+    copyConfig(settings?: TSettings): void;
+    copyRom(rom: Uint8Array): void;
+    copySave(state: Uint8Array): void;
+    start(): void;
+    loadSave(): void;
 }

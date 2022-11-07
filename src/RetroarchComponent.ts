@@ -1,4 +1,5 @@
-import { Retroarch, TCore } from "./retroarch-module/retroarch"
+import { TCore } from "./retroarch-module/CoreManager"
+import { Retroarch } from "./retroarch-module/Retroarch"
 
 const templateString = `<canvas id="canvas"></canvas>`
 

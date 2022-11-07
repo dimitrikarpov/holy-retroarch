@@ -5,5 +5,6 @@ declare global {
         Module: any;
         FS: any;
         RA: any;
+        Browser: any;
     }
 }

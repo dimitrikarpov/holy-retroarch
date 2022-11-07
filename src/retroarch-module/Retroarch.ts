@@ -16,27 +16,52 @@
  *   retroarch will start it by calling `onRuntimeInitialized` hook or we can copy directly to wasm filesystem
  * - and we ready to start the Module!
  */
-import { Deferred } from "../utils/Deferred";
-export declare type TCore = "nestopia" | "fceumm";
-export interface IRetroarch {
-    prepare: (canvas: HTMLCanvasElement, core: TCore) => Promise<void>;
-    copyConfig: () => void;
-    copyRom: (rom: Uint8Array) => void;
-    copySave: (state: Uint8Array) => void;
-    start: () => void;
-    loadSave: () => void;
-    onEmulatorStarted: () => void;
-}
-export declare class Retroarch {
-    core: TCore;
-    canvas: HTMLCanvasElement;
-    deferredOnRuntimeInitialized: Deferred;
-    constructor(core: TCore, canvas: HTMLCanvasElement);
-    downloadCore(): Promise<void>;
-    copyConfig(): void;
-    copyRom(rom: Uint8Array): void;
-    copySave(state: Uint8Array): void;
-    start(): void;
-    loadSave(): void;
-    onEmulatorStarted(): void;
+
+import {
+  defaultKeybinds,
+  extraConfig,
+  nulKeys,
+  stringifySettings,
+  TSettings,
+} from "./defaultConfig"
+import { CoreManager, DIRS, TCore } from "./CoreManager"
+
+const defaultSettings = { ...defaultKeybinds, ...extraConfig, ...nulKeys }
+
+export class Retroarch {
+  public manager: CoreManager
+
+  constructor(core: TCore, canvas: HTMLCanvasElement) {
+    this.manager = new CoreManager(core, canvas)
+  }
+
+  async init() {
+    await this.manager.downloadCore()
+    this.copyConfig()
+  }
+
+  copyConfig(settings: TSettings = defaultSettings) {
+    this.manager.copyFile(
+      stringifySettings(settings),
+      DIRS.USERDATA,
+      "retroarch.cfg",
+    )
+  }
+
+  copyRom(rom: Uint8Array) {
+    this.manager.copyFile(rom, DIRS.ROOT, "rom.bin")
+  }
+
+  copySave(state: Uint8Array) {
+    this.manager.copyFile(state, DIRS.STATES, "rom.state")
+  }
+
+  start() {
+    this.manager.module.callMain(this.manager.module.arguments)
+    this.manager.module.resumeMainLoop()
+  }
+
+  loadSave() {
+    this.manager.module._cmd_load_state()
+  }
 }
