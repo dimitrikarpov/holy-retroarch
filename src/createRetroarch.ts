@@ -4,29 +4,34 @@ import { Retroarch } from "./retroarch-module/Retroarch"
 export type TCreateRetroarchOptions = {
   core: TCore
   rom?: Uint8Array
-  container?: HTMLElement
   save?: Uint8Array
-  onStarted?: () => void
+  container?: HTMLDivElement
 }
 
 const templateString = `<canvas id="canvas"></canvas>`
 
-const createCanvas = () => {
-  let container = document.createElement("div")
-  document.body.appendChild(container)
-  container.innerHTML = templateString
+const createCanvas = (parent: HTMLDivElement = undefined) => {
+  let root: HTMLDivElement
 
-  const canvas = container.querySelector("canvas")
+  if (parent) {
+    root = parent
+  } else {
+    root = document.createElement("div")
+    document.body.appendChild(root)
+  }
 
-  return canvas
+  root.innerHTML = templateString
+
+  return root.querySelector("canvas")
 }
 
 export const createRetroarch = async ({
   core,
   rom,
   save,
+  container,
 }: TCreateRetroarchOptions) => {
-  const canvas = createCanvas()
+  const canvas = createCanvas(container)
 
   const retroarch = new Retroarch(core, canvas)
 

@@ -3,10 +3,6 @@ import { toUint8Array, createRetroarch } from "../../dist/index.js"
 let rom
 let state
 
-function onStarted() {
-  console.log(">>>>>>>>>>> EMULATOR IS STARTED <<<<<<<<<<<<<<<")
-}
-
 async function onUploadRom() {
   rom = await toUint8Array.fromFile(this.files[0])
 }
@@ -19,8 +15,8 @@ async function onStart() {
   const retroarch = await createRetroarch({
     core: "fceumm",
     rom,
-    savestate: state,
-    onStarted,
+    save: state,
+    container,
   })
 
   retroarch.start()

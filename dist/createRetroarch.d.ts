@@ -3,8 +3,7 @@ import { Retroarch } from "./retroarch-module/Retroarch";
 export declare type TCreateRetroarchOptions = {
     core: TCore;
     rom?: Uint8Array;
-    container?: HTMLElement;
     save?: Uint8Array;
-    onStarted?: () => void;
+    container?: HTMLDivElement;
 };
-export declare const createRetroarch: ({ core, rom, save, }: TCreateRetroarchOptions) => Promise<Retroarch>;
+export declare const createRetroarch: ({ core, rom, save, container, }: TCreateRetroarchOptions) => Promise<Retroarch>;
