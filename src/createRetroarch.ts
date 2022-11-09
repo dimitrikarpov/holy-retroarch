@@ -5,6 +5,7 @@ export type TCreateRetroarchOptions = {
   core: TCore
   rom?: Uint8Array
   save?: Uint8Array
+  canvas?: HTMLCanvasElement
   container?: HTMLDivElement
 }
 
@@ -29,11 +30,10 @@ export const createRetroarch = async ({
   core,
   rom,
   save,
+  canvas,
   container,
 }: TCreateRetroarchOptions) => {
-  const canvas = createCanvas(container)
-
-  const retroarch = new Retroarch(core, canvas)
+  const retroarch = new Retroarch(core, canvas || createCanvas(container))
 
   await retroarch.init()
   retroarch.copyConfig()

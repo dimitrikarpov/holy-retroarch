@@ -13,13 +13,17 @@ async function onUploadState() {
 
 async function onStart() {
   const retroarch = await createRetroarch({
-    core: "fceumm",
+    core: "nestopia",
     rom,
     save: state,
-    container,
   })
 
   retroarch.start()
+
+  setTimeout(() => {
+    const canvasEl = document.getElementById("canvas")
+    const videoStream = canvasEl.captureStream()
+  }, 2000)
 }
 
 const main = () => {
