@@ -6,11 +6,14 @@ async function onUpload() {
   const rom = await toUint8Array.fromFile(this.files[0])
 
   retroarch.copyRom(rom)
-  retroarch.start()
+
+  setTimeout(() => {
+    retroarch.start()
+  }, 2000)
 }
 
 const main = () => {
-  retroarch = document.querySelector("holy-retroarch")
+  retroarch = document.querySelector("holy-retroarch").retroarch
 
   console.log({ retroarch })
 

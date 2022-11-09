@@ -22,6 +22,9 @@ export class RetroarchComponent extends HTMLElement {
 
   async init() {
     this.retroarch = new Retroarch(this.core, this.$canvas)
+
+    console.log("FFFFFFFFFFFFFFFFFFFffff", this.retroarch)
+
     await this.retroarch.init()
     this.retroarch.copyConfig()
   }
