@@ -1,4 +1,7 @@
-export const extraConfig = { rgui_show_start_screen: "false" }
+export const extraConfig = {
+  rgui_show_start_screen: "false",
+  audio_latency: 256,
+}
 
 export const defaultKeybinds = {
   input_player1_start: "enter",
@@ -319,7 +322,7 @@ export const nulKeys = {
   input_volume_up_mbtn: "nul",
 }
 
-export type TSettings = Record<string, string>
+export type TSettings = Record<string, string | number>
 
 export const stringifySettings = (settings: TSettings) =>
   Object.entries(settings).reduce(
