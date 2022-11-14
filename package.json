@@ -1,6 +1,6 @@
 {
   "name": "holy-retroarch",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Dimitri Karpov <karpov.dimon@gmail.com>",
   "description": "emscripten retroarch cores js wrapper",
   "main": "./dist/index.js",

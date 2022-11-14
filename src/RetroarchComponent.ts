@@ -2,6 +2,21 @@ import { Retroarch } from "./retroarch-module/Retroarch"
 
 const templateString = `<canvas id="canvas"></canvas>`
 
+/**
+ * Retroarch Web Component
+ *
+ * usage example
+ *
+ * ```<holy-retroarch core-url="../cores/fceumm_libretro.js"></holy-retroarch>```
+ *
+ * params:
+ * *core-url* - url of used core
+ * You can make link to locally hosted cores ```core-url="../cores/fceumm_libretro.js"```
+ * or use these repo cdn ```core-url="https://cdn.statically.io/gh/dimitrikarpov/holy-retroarch@master/cores/fceumm_libretro.js">```
+ *
+ * *rom-url* - url of rom to load on retroarch start
+ * *save-url* - url of save state to load on retroarch start
+ */
 export class RetroarchComponent extends HTMLElement {
   retroarch: Retroarch
   coreUrl: string
@@ -28,5 +43,3 @@ export class RetroarchComponent extends HTMLElement {
 
   disconnectedCallback() {}
 }
-
-// <holy-retroarch core-url="" rom-url="" save-url="" >
