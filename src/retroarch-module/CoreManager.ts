@@ -1,10 +1,6 @@
 import { Deferred } from "../utils/Deferred"
 import { configureModule } from "./configureModule"
 import { injectScript } from "../utils/injectScript"
-import { waitMs } from "../utils/waitMs"
-
-const cores_url =
-  "https://cdn.statically.io/gh/dimitrikarpov/holy-retroarch@master/cores"
 
 export const DIRS = {
   ROOT: "/",
@@ -12,32 +8,28 @@ export const DIRS = {
   STATES: "home/web_user/retroarch/userdata/states",
 }
 
-export type TCore = "nestopia" | "fceumm"
-
 export class CoreManager {
-  private core: TCore
+  private coreUrl: string
   private deferredOnRuntimeInitialized: Deferred
   public canvas: HTMLCanvasElement
   public module: any
   public fs: any
   public ra: any
 
-  constructor(core: TCore, canvas: HTMLCanvasElement) {
-    this.core = core
+  constructor(core: string, canvas: HTMLCanvasElement) {
+    this.coreUrl = core
     this.canvas = canvas
     this.deferredOnRuntimeInitialized = new Deferred()
   }
 
   async downloadCore() {
     configureModule(this.canvas, this.deferredOnRuntimeInitialized.resolve)
-    // await injectScript(`${cores_url}/${this.core}_libretro.js`)
-    await injectScript(this.core)
+    await injectScript(this.coreUrl)
     await this.deferredOnRuntimeInitialized.promise
 
     this.module = window.Module
     this.fs = window.FS
     this.ra = window.RA
-    // await waitMs(1000)
   }
 
   copyFile(file: Uint8Array | string, path: string, filename: string) {

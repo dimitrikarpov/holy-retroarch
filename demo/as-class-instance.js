@@ -1,7 +1,8 @@
-import { toUint8Array, createRetroarch } from "../../dist/index.js"
+import { toUint8Array, Retroarch } from "../dist/index.js"
 
 let rom
 let state
+let retroarch
 
 async function onUploadRom() {
   rom = await toUint8Array.fromFile(this.files[0])
@@ -12,20 +13,16 @@ async function onUploadState() {
 }
 
 async function onStart() {
-  setTimeout(async () => {
-    const retroarch = await createRetroarch({
-      core: "fceumm",
-      rom,
-      save: state,
-    })
+  const canvas = document.getElementById("canvas")
 
-    retroarch.start()
-  }, 2000)
+  retroarch = new Retroarch("../cores/fceumm_libretro.js", canvas)
+  await retroarch.init()
+  retroarch.copyConfig()
 
-  // setTimeout(() => {
-  //   const canvasEl = document.getElementById("canvas")
-  //   const videoStream = canvasEl.captureStream()
-  // }, 2000)
+  if (rom) retroarch.copyRom(rom)
+  if (state) retroarch.copySave(state)
+
+  retroarch.start()
 }
 
 const main = () => {

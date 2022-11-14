@@ -28,6 +28,7 @@ export const defaultKeybinds = {
   input_player1_r_y_minus: "nul",
   input_player1_r_y_plus: "nul",
   input_player1_r3_btn: "nul",
+  // retroarch keybindings
   input_menu_toggle: "f1",
   input_save_state: "f2",
   input_load_state: "f3",

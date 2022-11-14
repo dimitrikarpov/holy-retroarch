@@ -24,15 +24,15 @@ import {
   stringifySettings,
   TSettings,
 } from "./defaultConfig"
-import { CoreManager, DIRS, TCore } from "./CoreManager"
+import { CoreManager, DIRS } from "./CoreManager"
 
 const defaultSettings = { ...defaultKeybinds, ...extraConfig, ...nulKeys }
 
 export class Retroarch {
   public manager: CoreManager
 
-  constructor(core: TCore, canvas: HTMLCanvasElement) {
-    this.manager = new CoreManager(core, canvas)
+  constructor(coreUrl: string, canvas: HTMLCanvasElement) {
+    this.manager = new CoreManager(coreUrl, canvas)
   }
 
   async init() {

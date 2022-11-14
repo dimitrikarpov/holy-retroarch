@@ -1,11 +1,10 @@
-import { TCore } from "./retroarch-module/CoreManager"
 import { Retroarch } from "./retroarch-module/Retroarch"
 
 const templateString = `<canvas id="canvas"></canvas>`
 
 export class RetroarchComponent extends HTMLElement {
   retroarch: Retroarch
-  core: TCore
+  coreUrl: string
   $canvas: HTMLCanvasElement
 
   constructor() {
@@ -15,13 +14,13 @@ export class RetroarchComponent extends HTMLElement {
   connectedCallback() {
     this.innerHTML = templateString
     this.$canvas = this.querySelector("canvas")
-    this.core = this.getAttribute("core") as TCore
+    this.coreUrl = this.getAttribute("core-url")
 
     this.init()
   }
 
   async init() {
-    this.retroarch = new Retroarch(this.core, this.$canvas)
+    this.retroarch = new Retroarch(this.coreUrl, this.$canvas)
 
     await this.retroarch.init()
     this.retroarch.copyConfig()
@@ -29,3 +28,5 @@ export class RetroarchComponent extends HTMLElement {
 
   disconnectedCallback() {}
 }
+
+// <holy-retroarch core-url="" rom-url="" save-url="" >

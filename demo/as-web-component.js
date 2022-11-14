@@ -1,4 +1,4 @@
-import { toUint8Array } from "../../dist/index.js"
+import { toUint8Array } from "../dist/index.js"
 
 let retroarch
 

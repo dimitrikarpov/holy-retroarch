@@ -5,8 +5,10 @@ if (!customElements.get("holy-retroarch")) {
 }
 
 export { Retroarch } from "./retroarch-module/Retroarch"
-export { createRetroarch } from "./createRetroarch"
 export { toUint8Array } from "./utils/toUint8Array"
+
+export const cores_url =
+  "https://cdn.statically.io/gh/dimitrikarpov/holy-retroarch@master/cores"
 
 declare global {
   interface Window {

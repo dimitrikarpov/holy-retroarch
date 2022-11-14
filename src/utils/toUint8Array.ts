@@ -18,4 +18,14 @@ export const toUint8Array = {
     const buffer = await (await fetch(base64)).arrayBuffer()
     return new Uint8Array(buffer)
   },
+
+  /**
+   * downloads file from url as Uint8Array
+   * @param url string
+   * @returns binary
+   */
+  fromUrl: async (url: string) => {
+    const buffer = await (await fetch(url)).arrayBuffer()
+    return new Uint8Array(buffer)
+  },
 }
