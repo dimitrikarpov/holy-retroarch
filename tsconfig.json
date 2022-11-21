@@ -3,8 +3,8 @@
     "outDir": "./dist/",
     "declaration": true,
     "noImplicitAny": false, // was true
-    "module": "es6",
-    "target": "es6",
+    "module": "ESNext",
+    "target": "ESNext",
     "allowJs": false, // was true
     "moduleResolution": "node"
   },
