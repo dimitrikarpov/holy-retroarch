@@ -40,9 +40,9 @@ export class Retroarch {
     this.copyConfig()
   }
 
-  copyConfig(settings: TSettings = defaultSettings) {
+  copyConfig(settings: TSettings = {}) {
     this.manager.copyFile(
-      stringifySettings(settings),
+      stringifySettings({ ...defaultSettings, ...settings }),
       DIRS.USERDATA,
       "retroarch.cfg",
     )

@@ -15,9 +15,8 @@ async function onUploadState() {
 async function onStart() {
   const canvas = document.getElementById("canvas")
 
-  retroarch = new Retroarch("../cores/genesis_plus_gx_libretro.js", canvas)
+  retroarch = new Retroarch("../cores/fceumm_libretro.js", canvas)
   await retroarch.init()
-  retroarch.copyConfig()
 
   if (rom) retroarch.copyRom(rom)
   if (state) retroarch.copySave(state)
