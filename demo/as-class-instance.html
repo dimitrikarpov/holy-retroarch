@@ -7,13 +7,20 @@
     <title>Usage Demo: as class instance</title>
   </head>
   <body>
-    <label for="rom">add rom</label>
-    <input type="file" name="rom" id="rom" />
-    <label for="state">add state</label>
-    <input type="file" name="state" id="state" />
-    <button type="button" name="start" id="start">start</button>
+    <div>
+      <label for="rom">add rom</label>
+      <input type="file" name="rom" id="rom" />
+      <label for="state">add state</label>
+      <input type="file" name="state" id="state" />
+    </div>
 
     <canvas id="canvas"></canvas>
+
+    <div>
+      <button type="button" name="start" id="start">start</button>
+      <button type="button" name="pause" id="pause">pause</button>
+      <button type="button" name="resume" id="resume">resume</button>
+    </div>
 
     <script type="module" src="as-class-instance.js"></script>
   </body>

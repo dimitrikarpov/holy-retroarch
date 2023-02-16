@@ -15,7 +15,7 @@ async function onUploadState() {
 async function onStart() {
   const canvas = document.getElementById("canvas")
 
-  retroarch = new Retroarch("../cores/fceumm_libretro.js", canvas)
+  retroarch = new Retroarch("../cores/genesis_plus_gx_libretro.js", canvas)
   await retroarch.init()
 
   if (rom) retroarch.copyRom(rom)
@@ -24,6 +24,14 @@ async function onStart() {
   setTimeout(() => {
     retroarch.start()
   }, 1000)
+}
+
+async function onPause() {
+  retroarch.pause()
+}
+
+async function onResume() {
+  retroarch.resume()
 }
 
 const main = () => {
@@ -35,6 +43,12 @@ const main = () => {
 
   const $start = document.getElementById("start")
   $start.addEventListener("click", onStart, false)
+
+  const $pause = document.getElementById("pause")
+  $pause.addEventListener("click", onPause, false)
+
+  const $resume = document.getElementById("resume")
+  $resume.addEventListener("click", onResume, false)
 }
 
 main()

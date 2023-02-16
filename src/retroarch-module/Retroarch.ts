@@ -61,7 +61,19 @@ export class Retroarch {
     this.manager.module.resumeMainLoop()
   }
 
+  pause() {
+    this.manager.module.pauseMainLoop()
+  }
+
+  resume() {
+    this.manager.module.resumeMainLoop()
+  }
+
   loadSave() {
     this.manager.module._cmd_load_state()
+  }
+
+  setCanvasSize(width: number, height: number) {
+    this.manager.module.setCanvasSize(width, height)
   }
 }
