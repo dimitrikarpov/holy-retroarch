@@ -1,4 +1,4 @@
-var audioCtx = new AudioContext()
+var audioCtx = new window.AudioContext()
 
 /**
  * Possible fix of crushing page when something goes wrong in [queueAudion](https://github.com/libretro/RetroArch/blob/master/emscripten/library_rwebaudio.js#L57) function and it can get a new timestamp
