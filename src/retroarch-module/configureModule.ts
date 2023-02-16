@@ -1,3 +1,4 @@
+import { makeSilence } from "./audioFix"
 import { moduleLogger } from "./moduleLogger"
 
 const { print, printErr } = moduleLogger()
@@ -13,7 +14,7 @@ export const configureModule = (
     onRuntimeInitialized,
     print,
     printErr,
-    preRun: [],
+    preRun: [makeSilence],
     postRun: [],
   }
 }

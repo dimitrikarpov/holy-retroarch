@@ -23,7 +23,7 @@ async function onStart() {
 
   setTimeout(() => {
     retroarch.start()
-  }, 1000)
+  }, 250)
 }
 
 async function onPause() {
