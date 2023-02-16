@@ -10,5 +10,6 @@ declare global {
     FS: any
     RA: any
     Browser: any
+    AudioContext: any
   }
 }

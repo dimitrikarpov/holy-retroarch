@@ -1,5 +1,3 @@
-var audioCtx = new AudioContext()
-
 /**
  * Possible fix of crushing page when something goes wrong in [queueAudion](https://github.com/libretro/RetroArch/blob/master/emscripten/library_rwebaudio.js#L57) function and it can get a new timestamp
  * This issue freeze the page because of infinite loop of Module process.
@@ -10,8 +8,10 @@ var audioCtx = new AudioContext()
  * @param duration milliseconds
  */
 export function makeSilence(duration: number = 1000) {
-  var oscillator = audioCtx.createOscillator()
-  var gainNode = audioCtx.createGain()
+  const audioCtx = new window.AudioContext()
+
+  const oscillator = audioCtx.createOscillator()
+  const gainNode = audioCtx.createGain()
 
   oscillator.connect(gainNode)
   gainNode.connect(audioCtx.destination)
