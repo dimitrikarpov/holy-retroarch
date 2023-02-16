@@ -6,7 +6,8 @@
     "module": "ESNext",
     "target": "ESNext",
     "allowJs": false, // was true
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "lib": ["DOM", "ESNext"]
   },
   "include": ["src"],
   "exclude": ["node_modules"]
