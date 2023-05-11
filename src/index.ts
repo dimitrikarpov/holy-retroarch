@@ -1,3 +1,4 @@
+export type { RetroarchStatus } from "./retroarch-module/Retroarch"
 export { Retroarch } from "./retroarch-module/Retroarch"
 export { toUint8Array } from "./utils/toUint8Array"
 

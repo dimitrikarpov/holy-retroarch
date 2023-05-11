@@ -21,9 +21,7 @@ async function onStart() {
   if (rom) retroarch.copyRom(rom)
   if (state) retroarch.copySave(state)
 
-  setTimeout(() => {
-    retroarch.start()
-  }, 250)
+  retroarch.start()
 }
 
 async function onPause() {
@@ -49,6 +47,10 @@ const main = () => {
 
   const $resume = document.getElementById("resume")
   $resume.addEventListener("click", onResume, false)
+
+  document.getElementById("canvas").addEventListener("ra-status", (e) => {
+    console.log("[HOLY-STATUS]", e.detail)
+  })
 }
 
 main()

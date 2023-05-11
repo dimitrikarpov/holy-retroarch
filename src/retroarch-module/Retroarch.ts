@@ -28,7 +28,16 @@ import { CoreManager, DIRS } from "./CoreManager"
 
 const defaultSettings = { ...defaultKeybinds, ...extraConfig, ...nulKeys }
 
+export type RetroarchStatus =
+  | "not-inited"
+  | "initing"
+  | "inited"
+  | "running"
+  | "paused"
+
 export class Retroarch {
+  public status: RetroarchStatus = "not-inited"
+
   public manager: CoreManager
 
   constructor(coreUrl: string, canvas: HTMLCanvasElement) {
@@ -36,8 +45,10 @@ export class Retroarch {
   }
 
   async init() {
+    this.changeStatus("initing")
     await this.manager.downloadCore()
     this.copyConfig()
+    this.changeStatus("inited")
   }
 
   copyConfig(settings: TSettings = {}) {
@@ -59,10 +70,12 @@ export class Retroarch {
   start() {
     this.manager.module.callMain(this.manager.module.arguments)
     this.manager.module.resumeMainLoop()
+    this.changeStatus("running")
   }
 
   pause() {
     this.manager.module.pauseMainLoop()
+    this.changeStatus("paused")
   }
 
   resume() {
@@ -75,5 +88,14 @@ export class Retroarch {
 
   setCanvasSize(width: number, height: number) {
     this.manager.module.setCanvasSize(width, height)
+  }
+
+  changeStatus(status: RetroarchStatus) {
+    this.status = status
+    const event = new CustomEvent("ra-status", {
+      detail: status,
+      bubbles: true,
+    })
+    this.manager.canvas.dispatchEvent(event)
   }
 }
