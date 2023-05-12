@@ -2,6 +2,29 @@
 
 Make web retroarch simplier
 
+### listen Retroarch status changes
+
+Holy Retroarch provides custom event called `ra-status` for emulator lifecycle changes. To handle them just subscribe on canvas element or any other canvas parent
+
+```js
+/**
+ * listening status changes
+ */
+function subscribeToRetroarchStatusChange() {
+  document.getElementById("canvas").addEventListener("ra-status", (e) => {
+    console.log("[HOLY-STATUS]", e.detail)
+  })
+}
+```
+
+Statuses:
+
+- `not-inited` - after creating Retroarch instance
+- `initing` - downloading core (Module) and copying config
+- `inited` - when `initing` phase completed
+- `running` - started Module's main loop
+- `paused` - paused Module's main loop (emulator paused)
+
 ## How to compile cores
 
 You can use already builded cores from retroarch's buildbot by downloading and unpacking [archive](https://buildbot.libretro.com/nightly/emscripten/) or you can build cores manually with adding some extra tweaks using this retroarch [compiling guide](https://github.com/libretro/RetroArch/blob/master/pkg/emscripten/README.md) as base guide
@@ -24,7 +47,7 @@ The main steps to compile core:
 
 ### prepare working folder and clone retroarch repo
 
-```
+```sh
 mkdir ~/retroarch
 cd ~/retroarch
 git clone https://github.com/libretro/RetroArch.git ~/retroarch/RetroArch
@@ -32,7 +55,7 @@ git clone https://github.com/libretro/RetroArch.git ~/retroarch/RetroArch
 
 and apply one of the patches from `/cores` folder. For example, let's patch for "web-only" environment
 
-```
+```bash
 cd Retroarch
 git apply ~/Documents/dev/holy-retroarch/cores/Retroarch-webonly.patch
 cd ..
@@ -40,7 +63,7 @@ cd ..
 
 ### compile core: Snes9x
 
-```
+```sh
 git clone https://github.com/libretro/snes9x
 
 docker run --rm -v $(pwd):/src -u $(id -u):$(id -g) \
@@ -53,7 +76,7 @@ cp ~/retroarch/snes9x/libretro/snes9x_libretro_emscripten.bc ~/retroarch/RetroAr
 
 ### compile core: Fceumm
 
-```
+```sh
 git clone https://github.com/libretro/libretro-fceumm.git
 
 docker run --rm -v $(pwd):/src -u $(id -u):$(id -g) \
@@ -66,7 +89,7 @@ cp ~/retroarch/libretro-fceumm/fceumm_libretro_emscripten.bc ~/retroarch/RetroAr
 
 ### compile core: Genesis Plus GX
 
-```
+```sh
 git clone https://github.com/libretro/Genesis-Plus-GX
 
 docker run --rm -v $(pwd):/src -u $(id -u):$(id -g) \
@@ -79,7 +102,7 @@ cp ~/retroarch/Genesis-Plus-GX/genesis_plus_gx_libretro_emscripten.bc ~/retroarc
 
 ### add retroarch to all compiled cores and build wasm files
 
-```
+```sh
 docker run --rm -v $(pwd):/src -u $(id -u):$(id -g) \
 -w /src/RetroArch/dist-scripts \
 emscripten/emsdk \

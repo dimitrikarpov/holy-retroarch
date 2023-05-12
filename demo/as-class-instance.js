@@ -32,7 +32,10 @@ async function onResume() {
   retroarch.resume()
 }
 
-const main = () => {
+/**
+ * binding UI controls to retroarch methods
+ */
+function initControls() {
   const $rom = document.getElementById("rom")
   $rom.addEventListener("change", onUploadRom, false)
 
@@ -47,10 +50,20 @@ const main = () => {
 
   const $resume = document.getElementById("resume")
   $resume.addEventListener("click", onResume, false)
+}
 
+/**
+ * listening status changes
+ */
+function subscribeToRetroarchStatusChange() {
   document.getElementById("canvas").addEventListener("ra-status", (e) => {
     console.log("[HOLY-STATUS]", e.detail)
   })
+}
+
+const main = () => {
+  initControls()
+  subscribeToRetroarchStatusChange()
 }
 
 main()
