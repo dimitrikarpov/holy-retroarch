@@ -32,6 +32,7 @@ export type RetroarchStatus =
   | "not-inited"
   | "initing"
   | "inited"
+  | "started"
   | "running"
   | "paused"
 
@@ -40,11 +41,8 @@ export class Retroarch {
 
   public manager: CoreManager
 
-  constructor(coreUrl: string, canvas: HTMLCanvasElement) {
+  async prepareCore(coreUrl: string, canvas: HTMLCanvasElement) {
     this.manager = new CoreManager(coreUrl, canvas)
-  }
-
-  async init() {
     this.changeStatus("initing")
     await this.manager.downloadCore()
     this.copyConfig()
@@ -68,9 +66,12 @@ export class Retroarch {
   }
 
   start() {
+    if (!this.manager)
+      throw new Error("Module not ready. Call `prepareCore` method first")
+
     this.manager.module.callMain(this.manager.module.arguments)
     this.manager.module.resumeMainLoop()
-    this.changeStatus("running")
+    this.changeStatus("started")
   }
 
   pause() {
@@ -80,6 +81,7 @@ export class Retroarch {
 
   resume() {
     this.manager.module.resumeMainLoop()
+    this.changeStatus("running")
   }
 
   loadSave() {
@@ -90,12 +92,8 @@ export class Retroarch {
     this.manager.module.setCanvasSize(width, height)
   }
 
-  changeStatus(status: RetroarchStatus) {
+  private changeStatus(status: RetroarchStatus) {
     this.status = status
-    const event = new CustomEvent("ra-status", {
-      detail: status,
-      bubbles: true,
-    })
-    this.manager.canvas.dispatchEvent(event)
+    this.manager.dispatchEvent(status)
   }
 }

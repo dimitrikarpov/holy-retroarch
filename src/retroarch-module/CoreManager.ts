@@ -1,6 +1,11 @@
 import { Deferred } from "../utils/Deferred"
 import { configureModule } from "./configureModule"
 import { injectScript } from "../utils/injectScript"
+import { type RetroarchStatus } from "./Retroarch"
+
+export type RetroarchCoreEvent =
+  | "core:download-started"
+  | "core:download-completed"
 
 export const DIRS = {
   ROOT: "/",
@@ -24,7 +29,9 @@ export class CoreManager {
 
   async downloadCore() {
     configureModule(this.canvas, this.deferredOnRuntimeInitialized.resolve)
+    this.dispatchEvent("core:download-started")
     await injectScript(this.coreUrl)
+    this.dispatchEvent("core:download-completed")
     await this.deferredOnRuntimeInitialized.promise
 
     this.module = window.Module
@@ -38,5 +45,13 @@ export class CoreManager {
     }
 
     this.fs.writeFile(`${path}/${filename}`, file)
+  }
+
+  dispatchEvent(status: RetroarchStatus | RetroarchCoreEvent) {
+    const event = new CustomEvent("ra-status", {
+      detail: status,
+      bubbles: true,
+    })
+    this.canvas.dispatchEvent(event)
   }
 }

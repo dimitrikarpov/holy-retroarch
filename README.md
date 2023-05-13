@@ -2,6 +2,10 @@
 
 Make web retroarch simplier
 
+## Usage
+
+Check `demo` folder for example
+
 ### listen Retroarch status changes
 
 Holy Retroarch provides custom event called `ra-status` for emulator lifecycle changes. To handle them just subscribe on canvas element or any other canvas parent

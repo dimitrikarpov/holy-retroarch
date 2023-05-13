@@ -1,4 +1,5 @@
 export type { RetroarchStatus } from "./retroarch-module/Retroarch"
+export type { RetroarchCoreEvent } from "./retroarch-module/CoreManager"
 export { Retroarch } from "./retroarch-module/Retroarch"
 export { toUint8Array } from "./utils/toUint8Array"
 
