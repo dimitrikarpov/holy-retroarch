@@ -54,7 +54,7 @@ The main steps to compile core:
 ```sh
 mkdir ~/retroarch
 cd ~/retroarch
-git clone https://github.com/libretro/RetroArch.git ~/retroarch/RetroArch
+git clone --depth 1 https://github.com/libretro/RetroArch.git ~/retroarch/RetroArch
 ```
 
 and apply one of the patches from `/cores` folder. For example, let's patch for "web-only" environment
@@ -68,7 +68,7 @@ cd ..
 ### compile core: Snes9x
 
 ```sh
-git clone https://github.com/libretro/snes9x
+git clone --depth 1 https://github.com/libretro/snes9x
 
 docker run --rm -v $(pwd):/src -u $(id -u):$(id -g) \
 -w /src/snes9x/libretro \
@@ -81,7 +81,7 @@ cp ~/retroarch/snes9x/libretro/snes9x_libretro_emscripten.bc ~/retroarch/RetroAr
 ### compile core: Fceumm
 
 ```sh
-git clone https://github.com/libretro/libretro-fceumm.git
+git clone --depth 1 https://github.com/libretro/libretro-fceumm.git
 
 docker run --rm -v $(pwd):/src -u $(id -u):$(id -g) \
 -w /src/libretro-fceumm \
@@ -95,6 +95,8 @@ cp ~/retroarch/libretro-fceumm/fceumm_libretro_emscripten.bc ~/retroarch/RetroAr
 
 ```sh
 git clone https://github.com/libretro/Genesis-Plus-GX
+
+cd Genesis-Plus-GX && git checkout 492b4c6 && cd ..
 
 docker run --rm -v $(pwd):/src -u $(id -u):$(id -g) \
 -w /src/Genesis-Plus-GX \
@@ -113,4 +115,4 @@ emscripten/emsdk \
 emmake ./dist-cores.sh emscripten
 ```
 
-All compiled `.js` and `.wasm` files now in `~/retroarch/RetroArch/pkg/` folder
+All compiled `.js` and `.wasm` files now in `~/retroarch/RetroArch/pkg/emscripten` folder
