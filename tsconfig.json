@@ -1,14 +1,13 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "declaration": true,
-    "noImplicitAny": false, // was true
-    "module": "ESNext",
-    "target": "ESNext",
-    "allowJs": false, // was true
-    "moduleResolution": "node",
-    "lib": ["DOM", "ESNext"]
-  },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+    "target": "ES2017",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "strictPropertyInitialization": false
+  }
 }
