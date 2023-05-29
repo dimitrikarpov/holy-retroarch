@@ -4,47 +4,41 @@ Make web retroarch simplier
 
 ## Usage
 
-Check `demo` folder for example
+### listening Retroarch status changes
 
-### listen Retroarch status changes
-
-Holy Retroarch provides custom event called `ra-status` for emulator lifecycle changes. To handle them just subscribe on canvas element or any other canvas parent
+Holy Retroarch provides custom event called `retroarch-status` for emulator lifecycle changes. To handle them just subscribe on canvas element or any other canvas parent
 
 ```js
 /**
  * listening status changes
  */
 function subscribeToRetroarchStatusChange() {
-  document.getElementById("canvas").addEventListener("ra-status", (e) => {
-    console.log("[HOLY-STATUS]", e.detail)
-  })
+  document
+    .getElementById("canvas")
+    .addEventListener("retroarch-status", (e) => {
+      console.log("[HOLY-STATUS]", e.detail)
+    })
 }
 ```
 
 Statuses:
 
-- `not-inited` - after creating Retroarch instance
-- `initing` - downloading core (Module) and copying config
-- `inited` - when `initing` phase completed
-- `running` - started Module's main loop
-- `paused` - paused Module's main loop (emulator paused)
+- `idle` - core dowloaded, and compiled. at this point you can copy custom retroarch config or rom
+- `started` - core started his main loop, rom started
+- `destroyed` - core stopped main loop and remove all event listeners. new core can be loaded
 
 ## How to compile cores
 
-You can use already builded cores from retroarch's buildbot by downloading and unpacking [archive](https://buildbot.libretro.com/nightly/emscripten/) or you can build cores manually with adding some extra tweaks using this retroarch [compiling guide](https://github.com/libretro/RetroArch/blob/master/pkg/emscripten/README.md) as base guide
+Unfortunately retroarch's [buildbot](https://buildbot.libretro.com/nightly/emscripten/) does not provide ES module web only versions of builded cores. But we can download build to see wich cores are available for web version of Retroarch and get theirs git repositories from libretro core's list (example [fceumm core](https://docs.libretro.com/library/fceumm/#external-links)).
 
-What type of tweaks can be added:
-
-- compiling output js code for web environment only, without support of nodejs or webworker environments
-- ability to add extra js code to compiled Module with needed logic
-- add or remove compilation params to add or remove compiled retroarch features and functions
-- and much more...
+Info about compiling cores can be found in official [compiling guide](https://github.com/libretro/RetroArch/blob/master/pkg/emscripten/README.md)
 
 For simplicity we will use official Emscripten SDK [docker continer](https://hub.docker.com/r/emscripten/emsdk)
 
 The main steps to compile core:
 
 - clone retroarch repo
+- patching make script with additional arguments
 - clone needed libretro core repo
 - compile core to bitcode `.bc` file
 - link core's `.bc` with retroarch frontend and compile them to `.js` and `.wasm`
@@ -61,7 +55,7 @@ and apply one of the patches from `/cores` folder. For example, let's patch for 
 
 ```bash
 cd Retroarch
-git apply ~/Documents/dev/holy-retroarch/cores/Retroarch-webonly.patch
+git apply ~/Documents/dev/holy-retroarch/cores/Retroarch-esmodule-webonly.patch
 cd ..
 ```
 
