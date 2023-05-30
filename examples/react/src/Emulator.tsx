@@ -6,7 +6,6 @@ type Core = "fceumm_libretro" | "genesis_plus_gx_libretro"
 export const Emulator = () => {
   const retroarchInstanceRef = useRef<Retroarch>()
   const canvasRef = useRef<HTMLCanvasElement>(null)
-
   const [rom, setRom] = useState<Uint8Array>()
   const [core, setCore] = useState<Core>("genesis_plus_gx_libretro")
 
@@ -33,6 +32,15 @@ export const Emulator = () => {
       coreUrl: `https://cdn.jsdelivr.net/gh/dimitrikarpov/holy-retroarch/cores/${core}.js`,
       wasmUrl: `https://cdn.jsdelivr.net/gh/dimitrikarpov/holy-retroarch/cores/${core}.wasm`,
       romBinary: rom,
+      onReady: () => {
+        console.log("🏋️🏋️🏋️ Core loaded and we ready to start 🏋️🏋️🏋️")
+      },
+      onStart: () => {
+        console.log("🚀🚀🚀 ROM started 🚀🚀🚀")
+      },
+      onDestroy: () => {
+        console.log("💀💀💀 Core destroyed succefully 💀💀💀")
+      },
     })
   }
 

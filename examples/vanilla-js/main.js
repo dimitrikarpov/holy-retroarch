@@ -32,6 +32,15 @@ const main = async () => {
       coreUrl: `https://cdn.jsdelivr.net/gh/dimitrikarpov/holy-retroarch/cores/${core}.js`,
       wasmUrl: `https://cdn.jsdelivr.net/gh/dimitrikarpov/holy-retroarch/cores/${core}.wasm`,
       romBinary: rom,
+      onReady: () => {
+        console.log("🏋️🏋️🏋️ Core loaded and we ready to start 🏋️🏋️🏋️")
+      },
+      onStart: () => {
+        console.log("🚀🚀🚀 ROM started 🚀🚀🚀")
+      },
+      onDestroy: () => {
+        console.log("💀💀💀 Core destroyed succefully 💀💀💀")
+      },
     })
 
     registerUIHandlers(retroarch)
