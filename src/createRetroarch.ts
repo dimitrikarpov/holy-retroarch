@@ -24,12 +24,15 @@ type CreateRetroarchOptions = {
   wasmUrl?: string
   settings?: TSettings
   romBinary?: Uint8Array
+  beforeLoad?: () => void
   onReady?: () => void
   onStart?: () => void
   onDestroy?: () => void
 }
 
 export const createRetroarch = async (options: CreateRetroarchOptions) => {
+  if (options.beforeLoad) options.beforeLoad()
+
   const { coreFactory, wasmBinary } = await fetchCore(
     options.coreUrl,
     options.wasmUrl,
