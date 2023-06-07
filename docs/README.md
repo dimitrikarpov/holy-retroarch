@@ -35,7 +35,6 @@ romInput.addEventListener("change", async function () {
 const retroarch = await createRetroarch({
   canvas: document.getElementById("canvas"),
   coreUrl: `https://somePublicPath/${core}.js`,
-  wasmUrl: `https://somePublicPath/${core}.wasm`,
   romBinary: rom,
 })
 ```
@@ -56,14 +55,16 @@ Async function that gets some options and return `retroarch` instance
 
 #### options
 
-- canvas - reference to canvas element (required)
-- coreUrl - string, url of core's js file (required)
-- wasmUrl - string, url of core's wasm file
-- settings - simply it is [retroach.cfg](createRetroarch) file in js object format
-- romBinary - Uint8Array blob of Rom
-- onReady - callback function that fires then core has been download and compiled. retroarch instance is created
-- onStart - callback function that fires after Retroarch has been started, i.e. created and starting **mainLoop**
-- onDestroy - callback that calls after retroarch instance has been succefully destroyed. and You can create new one
+- `canvas` - reference to canvas element (required)
+- `coreUrl` - string, url of core's js file (required)
+- `wasmUrl` - string, url of core's wasm file
+- `optionsUrl` - string, url of [core's options](CORE-OPTIONS.md) file
+- `config` - simply it is [retroach.cfg](createRetroarch) file in js object format
+- `romBinary` - Uint8Array blob of Rom
+- `beforeLoad` - callback function that fires before loading core
+- `onReady` - callback function that fires then core has been download and compiled. retroarch instance is created
+- `onStart` - callback function that fires after Retroarch has been started, i.e. created and starting **mainLoop**
+- `onDestroy` - callback that calls after retroarch instance has been succefully destroyed. and You can create new one
 
 ### Retroarch
 

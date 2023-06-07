@@ -31,16 +31,17 @@ export const fetchCore = async (
   const coreFactory = (
     await import(/* webpackIgnore: true */ /* @vite-ignore*/ coreUrl)
   ).default
+
   const wasmBinary = await fetchWasm(
     wasmUrl || replacePostfix(coreUrl, ".js", ".wasm"),
   )
 
-  const options: CoreOptions = await import(
+  const coreOptions: CoreOptions = await import(
     /* webpackIgnore: true */ /* @vite-ignore*/
     optionsUrl || replacePostfix(coreUrl, ".js", ".options.js")
   )
 
-  return { coreFactory, wasmBinary, coreOptions: options }
+  return { coreFactory, wasmBinary, coreOptions }
 }
 
 type CreateRetroarchOptions = {
