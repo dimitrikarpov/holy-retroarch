@@ -30,8 +30,10 @@ const main = async () => {
     const retroarch = await createRetroarch({
       canvas: document.getElementById("canvas"),
       coreUrl: `https://cdn.jsdelivr.net/gh/dimitrikarpov/holy-retroarch/cores/${core}.js`,
-      wasmUrl: `https://cdn.jsdelivr.net/gh/dimitrikarpov/holy-retroarch/cores/${core}.wasm`,
       romBinary: rom,
+      beforeLoad: () => {
+        console.log("🎬🎬🎬 Starting to load core 🎬🎬🎬")
+      },
       onReady: () => {
         console.log("🏋️🏋️🏋️ Core loaded and we ready to start 🏋️🏋️🏋️")
       },
