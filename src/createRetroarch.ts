@@ -1,6 +1,6 @@
 import { Retroarch } from "./Retroarch"
 import { buildCore } from "./buildCore"
-import { TSettings } from "./config"
+import { RetroarchConfig } from "./config"
 
 const replacePostfix = (str: string, target: string, replacement: string) => {
   const lastIndex = str.lastIndexOf(target)
@@ -48,7 +48,7 @@ type CreateRetroarchOptions = {
   coreUrl: string
   wasmUrl?: string
   optionsUrl?: string
-  settings?: TSettings
+  config?: RetroarchConfig
   romBinary?: Uint8Array
   beforeLoad?: () => void
   onReady?: () => void
@@ -74,11 +74,11 @@ export const createRetroarch = async (options: CreateRetroarchOptions) => {
 
   const retroarch = new Retroarch(core, {
     romBinary: options.romBinary,
-    options: coreOptions.defaultOptions,
+    coreOptions: coreOptions.defaultOptions,
     onStart: options.onStart,
     onDestroy: options.onDestroy,
   })
-  retroarch.copyConfig(options.settings)
+  retroarch.copyConfig(options.config)
   retroarch.copyOptions(coreOptions.defaultOptions, coreOptions.folder)
 
   return retroarch

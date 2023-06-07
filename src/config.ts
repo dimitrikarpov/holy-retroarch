@@ -326,12 +326,12 @@ const nulKeys = {
 
 export const defaultConfig = { ...settings, ...defaultKeybinds, ...nulKeys }
 
-export type TSettings = Partial<
+export type RetroarchConfig = Partial<
   typeof defaultConfig & { [string: string]: string | number }
 >
 
 export const stringifySettings = (
-  settings: TSettings | Record<string, string>,
+  settings: RetroarchConfig | Record<string, string>,
 ) => {
   return Object.entries(settings).reduce(
     (acc, [key, value]) => `${acc}${key} = "${value}"\n`,
