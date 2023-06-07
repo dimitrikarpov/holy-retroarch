@@ -1,8 +1,12 @@
 import { Module } from "./buildCore"
-import { type TSettings, defaultConfig, stringifySettings } from "./config"
+import {
+  type RetroarchConfig,
+  defaultConfig,
+  stringifySettings,
+} from "./config"
 
 type RetroarchOptions = Partial<{
-  settings: TSettings
+  coreOptions: Record<string, string>
   romBinary: Uint8Array
   onStart: () => void
   onDestroy: () => void
@@ -20,7 +24,6 @@ export class Retroarch {
   constructor(module: Module, options: RetroarchOptions = {}) {
     this.module = module
     this.options = options
-    this.copyConfig(options.settings)
     options.romBinary && this.copyRom(options.romBinary)
   }
 
@@ -42,11 +45,19 @@ export class Retroarch {
     this.module.FS.writeFile(`${path}/${filename}`, file)
   }
 
-  copyConfig(settings: TSettings = {}) {
+  copyConfig(config: RetroarchConfig = {}) {
     this.copyFile(
-      stringifySettings({ ...defaultConfig, ...settings }),
+      stringifySettings({ ...defaultConfig, ...config }),
       "home/web_user/retroarch/userdata",
       "retroarch.cfg",
+    )
+  }
+
+  copyOptions(options: Record<string, string> = {}, folder: string) {
+    this.copyFile(
+      stringifySettings({ ...this.options.coreOptions, ...options }),
+      `home/web_user/retroarch/userdata/config/${folder}`,
+      "rom.opt",
     )
   }
 
