@@ -330,7 +330,9 @@ export type TSettings = Partial<
   typeof defaultConfig & { [string: string]: string | number }
 >
 
-export const stringifySettings = (settings: TSettings) => {
+export const stringifySettings = (
+  settings: TSettings | Record<string, string>,
+) => {
   return Object.entries(settings).reduce(
     (acc, [key, value]) => `${acc}${key} = "${value}"\n`,
     "",

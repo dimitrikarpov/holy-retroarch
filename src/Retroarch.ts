@@ -3,6 +3,7 @@ import { type TSettings, defaultConfig, stringifySettings } from "./config"
 
 type RetroarchOptions = Partial<{
   settings: TSettings
+  options: Record<string, string>
   romBinary: Uint8Array
   onStart: () => void
   onDestroy: () => void
@@ -47,6 +48,14 @@ export class Retroarch {
       stringifySettings({ ...defaultConfig, ...settings }),
       "home/web_user/retroarch/userdata",
       "retroarch.cfg",
+    )
+  }
+
+  copyOptions(options: Record<string, string> = {}, folder: string) {
+    this.copyFile(
+      stringifySettings({ ...this.options.options, ...options }),
+      `home/web_user/retroarch/userdata/config/${folder}`,
+      "rom.opt",
     )
   }
 
